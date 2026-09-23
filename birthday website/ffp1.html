@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RFMS Fleet</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           MAIN PAGE
+        ========================= */
+
+        .main-page {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            position: relative;
+        }
+
+        /* =========================
+           LEFT - AUTHORITY
+        ========================= */
+
+        .authority-section {
+            width: 50%;
+            min-height: 100vh;
+            background: #086397;
+            background: linear-gradient(
+                135deg,
+                #126d9f,
+                #075b8c
+            );
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            position: relative;
+        }
+
+        /* =========================
+           RIGHT - DRIVER
+        ========================= */
+
+        .driver-section {
+            width: 50%;
+            min-height: 100vh;
+            background: #ffffff;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            position: relative;
+        }
+
+        /* =========================
+           LOGO
+        ========================= */
+
+        .logo {
+            position: absolute;
+
+            top: 25px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            width: 180px;
+
+            z-index: 10;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .login-content {
+            width: 100%;
+            max-width: 350px;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 70px;
+        }
+
+        /* =========================
+           ILLUSTRATIONS
+        ========================= */
+
+        .authority-image {
+            width: 170px;
+            height: 125px;
+
+            object-fit: contain;
+
+            margin-bottom: 8px;
+        }
+
+        .driver-image {
+            width: 180px;
+            height: 125px;
+
+            object-fit: contain;
+
+            margin-bottom: 8px;
+        }
+
+        /* =========================
+           TITLES
+        ========================= */
+
+        .login-title {
+            font-size: 18px;
+            font-weight: 800;
+
+            letter-spacing: 0.3px;
+
+            margin-bottom: 12px;
+        }
+
+        .authority-title {
+            color: white;
+        }
+
+        .driver-title {
+            color: #075b8c;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .get-started {
+            border: none;
+
+            padding: 9px 20px;
+
+            border-radius: 25px;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 0.2px;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+        .authority-button {
+            background: white;
+            color: #086397;
+        }
+
+        .driver-button {
+            background: #086397;
+            color: white;
+        }
+
+        .get-started:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.18);
+        }
+
+        .get-started:active {
+            transform: scale(0.96);
+        }
+
+        /* =========================
+           LOGIN PAGE
+        ========================= */
+
+        .login-page {
+            display: none;
+
+            min-height: 100vh;
+            width: 100%;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #f4f8fb;
+
+            padding: 30px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 40px;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.12);
+
+            text-align: center;
+        }
+
+        .login-card img {
+            width: 150px;
+            height: 100px;
+
+            object-fit: contain;
+
+            margin-bottom: 10px;
+        }
+
+        .login-card h2 {
+            color: #075b8c;
+            margin-bottom: 8px;
+        }
+
+        .login-card p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* =========================
+           INPUTS
+        ========================= */
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            color: #333;
+
+            margin-bottom: 7px;
+        }
+
+        .input-group input {
+            width: 100%;
+
+            padding: 13px 15px;
+
+            border: 1px solid #d5dfe7;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #086397;
+
+            box-shadow:
+                0 0 0 3px rgba(8, 99, 151, 0.1);
+        }
+
+        /* =========================
+           LOGIN BUTTON
+        ========================= */
+
+        .login-button {
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #086397;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            background: #064f79;
+        }
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-button {
+            margin-top: 18px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #086397;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           FORGOT PASSWORD
+        ========================= */
+
+        .forgot-password {
+            display: block;
+
+            margin-top: 14px;
+
+            color: #086397;
+
+            font-size: 12px;
+
+            text-decoration: none;
+
+            cursor: pointer;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        .message {
+            margin-top: 15px;
+
+            font-size: 13px;
+
+            display: none;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .main-page {
+                flex-direction: column;
+            }
+
+            .authority-section,
+            .driver-section {
+                width: 100%;
+                min-height: 50vh;
+            }
+
+            .authority-section {
+                padding-top: 70px;
+            }
+
+            .driver-section {
+                padding-bottom: 30px;
+            }
+
+            .logo {
+                width: 145px;
+                top: 15px;
+            }
+
+            .login-content {
+                margin-top: 40px;
+            }
+
+            .authority-image,
+            .driver-image {
+                width: 145px;
+                height: 105px;
+            }
+
+            .login-title {
+                font-size: 15px;
+            }
+
+            .login-card {
+                padding: 30px 22px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <!-- =====================================================
+         MAIN SELECTION PAGE
+    ====================================================== -->
+
+    <div class="main-page" id="mainPage">
+
+        <!-- LOGO -->
+        <img
+            src="logo.png"
+            class="logo"
+            alt="Facility Force Logo"
+        >
+
+
+        <!-- =================================================
+             AUTHORITY SECTION
+        ================================================== -->
+
+        <section class="authority-section">
+
+            <div class="login-content">
+
+                <img
+                    src="authority.png"
+                    class="authority-image"
+                    alt="Authority Login"
+                >
+
+                <h2 class="login-title authority-title">
+                    AUTHORITY LOGIN
+                </h2>
+
+                <button
+                    class="get-started authority-button"
+                    onclick="openLogin('authority')"
+                >
+                    GET STARTED
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             DRIVER SECTION
+        ================================================== -->
+
+        <section class="driver-section">
+
+            <div class="login-content">
+
+                <img
+                    src="driver.png"
+                    class="driver-image"
+                    alt="Driver Login"
+                >
+
+                <h2 class="login-title driver-title">
+                    DRIVER LOGIN
+                </h2>
+
+                <button
+                    class="get-started driver-button"
+                    onclick="openLogin('driver')"
+                >
+                    GET STARTED
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         AUTHORITY LOGIN PAGE
+    ====================================================== -->
+
+    <div
+        class="login-page"
+        id="authorityLogin"
+    >
+
+        <div class="login-card">
+
+            <img
+                src="authority.png"
+                alt="Authority"
+            >
+
+            <h2>
+                Authority Login
+            </h2>
+
+            <p>
+                Login to access the administration dashboard
+            </p>
+
+
+            <div class="input-group">
+
+                <label>
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="authorityUsername"
+                    placeholder="Enter username"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="authorityPassword"
+                    placeholder="Enter password"
+                >
+
+            </div>
+
+
+            <button
+                class="login-button"
+                onclick="login('authority')"
+            >
+                LOGIN
+            </button>
+
+
+            <a
+                class="forgot-password"
+                onclick="forgotPassword()"
+            >
+                Forgot Password?
+            </a>
+
+
+            <p
+                class="message"
+                id="authorityMessage"
+            ></p>
+
+
+            <button
+                class="back-button"
+                onclick="goBack()"
+            >
+                ← Back
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         DRIVER LOGIN PAGE
+    ====================================================== -->
+
+    <div
+        class="login-page"
+        id="driverLogin"
+    >
+
+        <div class="login-card">
+
+            <img
+                src="driver.png"
+                alt="Driver"
+            >
+
+            <h2>
+                Driver Login
+            </h2>
+
+            <p>
+                Login to access your route dashboard
+            </p>
+
+
+            <div class="input-group">
+
+                <label>
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="driverUsername"
+                    placeholder="Enter username"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="driverPassword"
+                    placeholder="Enter password"
+                >
+
+            </div>
+
+
+            <button
+                class="login-button"
+                onclick="login('driver')"
+            >
+                LOGIN
+            </button>
+
+
+            <a
+                class="forgot-password"
+                onclick="forgotPassword()"
+            >
+                Forgot Password?
+            </a>
+
+
+            <p
+                class="message"
+                id="driverMessage"
+            ></p>
+
+
+            <button
+                class="back-button"
+                onclick="goBack()"
+            >
+                ← Back
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        /* -----------------------------------------
+           OPEN LOGIN PAGE
+        ----------------------------------------- */
+
+        function openLogin(type) {
+
+            document.getElementById("mainPage").style.display = "none";
+
+            if (type === "authority") {
+
+                document.getElementById("authorityLogin").style.display =
+                    "flex";
+
+            }
+
+            if (type === "driver") {
+
+                document.getElementById("driverLogin").style.display =
+                    "flex";
+
+            }
+
+        }
+
+
+        /* -----------------------------------------
+           GO BACK
+        ----------------------------------------- */
+
+        function goBack() {
+
+            document.getElementById("authorityLogin").style.display =
+                "none";
+
+            document.getElementById("driverLogin").style.display =
+                "none";
+
+            document.getElementById("mainPage").style.display =
+                "flex";
+
+        }
+
+
+        /* -----------------------------------------
+           LOGIN
+        ----------------------------------------- */
+
+        function login(type) {
+
+            let username;
+            let password;
+            let message;
+
+            if (type === "authority") {
+
+                username =
+                    document.getElementById(
+                        "authorityUsername"
+                    ).value.trim();
+
+                password =
+                    document.getElementById(
+                        "authorityPassword"
+                    ).value.trim();
+
+                message =
+                    document.getElementById(
+                        "authorityMessage"
+                    );
+
+            }
+
+            else {
+
+                username =
+                    document.getElementById(
+                        "driverUsername"
+                    ).value.trim();
+
+                password =
+                    document.getElementById(
+                        "driverPassword"
+                    ).value.trim();
+
+                message =
+                    document.getElementById(
+                        "driverMessage"
+                    );
+
+            }
+
+
+            if (username === "" || password === "") {
+
+                message.style.display = "block";
+
+                message.style.color = "#d62828";
+
+                message.innerText =
+                    "Please enter username and password.";
+
+                return;
+
+            }
+
+
+            /*
+               FRONTEND DEMO ONLY
+
+               Backend authentication can be
+               connected later.
+            */
+
+            message.style.display = "block";
+
+            message.style.color = "#16803c";
+
+            message.innerText =
+                "Login successful!";
+
+        }
+
+
+        /* -----------------------------------------
+           FORGOT PASSWORD
+        ----------------------------------------- */
+
+        function forgotPassword() {
+
+            alert(
+                "Password recovery will be connected to the backend."
+            );
+
+        }
+
+    </script>
+
+</body>
+</html>

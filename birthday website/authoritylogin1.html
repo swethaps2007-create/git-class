@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Authority Login</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #cfe3fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        /* Main card */
+
+        .login-card {
+            width: 440px;
+            background: white;
+            border-radius: 28px;
+            padding: 0 34px 30px;
+            box-shadow: 0 15px 35px rgba(31, 74, 130, 0.15);
+            overflow: hidden;
+        }
+
+        /* Top bar */
+
+        .top-bar {
+            background: #14518a;
+            margin: 0 -34px;
+            padding: 18px 28px;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-button {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 27px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .top-bar h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* Building icon */
+
+        .admin-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #c9e0fb;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: 32px auto 12px;
+            font-size: 32px;
+        }
+
+        .dashboard-text {
+            text-align: center;
+            color: #333;
+            font-size: 15px;
+            margin-bottom: 28px;
+        }
+
+        /* Form */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            color: #143d68;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 48px;
+            border: 1px solid #d2dce8;
+            border-radius: 9px;
+            padding: 0 14px;
+
+            font-size: 17px;
+            color: #333;
+            background: #fff;
+
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #3575e5;
+            box-shadow: 0 0 0 3px rgba(53, 117, 229, 0.12);
+        }
+
+        input::placeholder {
+            color: #777;
+        }
+
+        /* Password */
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box input {
+            padding-right: 50px;
+        }
+
+        .eye-button {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            border: none;
+            background: transparent;
+            cursor: pointer;
+
+            font-size: 19px;
+            color: #777;
+        }
+
+        /* Forgot password */
+
+        .forgot {
+            display: block;
+            text-align: right;
+            margin-top: -4px;
+            margin-bottom: 20px;
+
+            color: #1457a6;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        /* Login button */
+
+        .login-button {
+            width: 100%;
+            height: 48px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #14518a;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            background: #0e4070;
+            transform: translateY(-1px);
+        }
+
+        .login-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Bottom text */
+
+        .authority-text {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        /* Message */
+
+        .message {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 15px;
+            min-height: 18px;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 520px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .login-card {
+                width: 100%;
+                padding-left: 25px;
+                padding-right: 25px;
+            }
+
+            .top-bar {
+                margin-left: -25px;
+                margin-right: -25px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="login-card">
+
+        <!-- Top bar -->
+
+        <div class="top-bar">
+
+            <button class="back-button" onclick="goBack()">
+                ←
+            </button>
+
+            <h2>Authority login</h2>
+
+        </div>
+
+
+        <!-- Building icon -->
+
+        <div class="admin-icon">
+            🏢
+        </div>
+
+
+        <p class="dashboard-text">
+            Admin dashboard
+        </p>
+
+
+        <!-- Login form -->
+
+        <form id="loginForm">
+
+            <!-- Admin ID -->
+
+            <div class="form-group">
+
+                <label for="adminId">
+                    Admin ID / email
+                </label>
+
+                <input
+                    type="email"
+                    id="adminId"
+                    placeholder="admin@company.com"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Password -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="password-box">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="eye-button"
+                        onclick="togglePassword()"
+                        id="eyeButton"
+                    >
+                        ◉
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Forgot password -->
+
+            <a
+                href="#"
+                class="forgot"
+                onclick="forgotPassword(event)"
+            >
+                Forgot password?
+            </a>
+
+
+            <!-- Role -->
+
+            <div class="form-group">
+
+                <label for="role">
+                    Role (optional)
+                </label>
+
+                <select id="role">
+
+                    <option value="transport-admin">
+                        Transport admin
+                    </option>
+
+                    <option value="authority">
+                        Authority
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Login -->
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+                Log in
+            </button>
+
+        </form>
+
+
+        <!-- Bottom -->
+
+        <p class="authority-text">
+            Authority access only
+        </p>
+
+        <p
+            class="message"
+            id="message"
+        ></p>
+
+    </div>
+
+
+    <script>
+
+        /* Show / hide password */
+
+        function togglePassword() {
+
+            const password =
+                document.getElementById("password");
+
+            const eyeButton =
+                document.getElementById("eyeButton");
+
+
+            if (password.type === "password") {
+
+                password.type = "text";
+
+                eyeButton.textContent = "◉";
+
+            } else {
+
+                password.type = "password";
+
+                eyeButton.textContent = "◉";
+            }
+        }
+
+
+        /* Back button */
+
+        function goBack() {
+
+            window.history.back();
+
+        }
+
+
+        /* Forgot password */
+
+        function forgotPassword(event) {
+
+            event.preventDefault();
+
+            const message =
+                document.getElementById("message");
+
+            message.style.color = "#1457a6";
+
+            message.textContent =
+                "Password reset option selected.";
+
+        }
+
+
+        /* Login */
+
+        document
+            .getElementById("loginForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+
+                const adminId =
+                    document.getElementById("adminId").value;
+
+                const password =
+                    document.getElementById("password").value;
+
+                const role =
+                    document.getElementById("role").value;
+
+
+                const message =
+                    document.getElementById("message");
+
+
+                if (adminId === "" || password === "") {
+
+                    message.style.color = "#d93025";
+
+                    message.textContent =
+                        "Please enter your login details.";
+
+                    return;
+                }
+
+
+                message.style.color = "#1457a6";
+
+                message.textContent =
+                    "Login successful.";
+
+                console.log("Admin ID:", adminId);
+                console.log("Role:", role);
+
+            });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RFMS Fleet - Driver Panel</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* =========================
+           APP CONTAINER
+        ========================= */
+
+        .app {
+            width: 100%;
+            max-width: 430px;
+            min-height: 100vh;
+            background: #f7f9fd;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            height: 72px;
+            background: linear-gradient(
+                135deg,
+                #1769e8,
+                #5046e5
+            );
+
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+            gap: 13px;
+        }
+
+        .menu-btn {
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 27px;
+            cursor: pointer;
+            width: 35px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-title {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            margin-top: 2px;
+            opacity: 0.85;
+        }
+
+        .header-icon {
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 7px;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 12px;
+            padding-bottom: 90px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 17px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 14px rgba(30, 60, 100, 0.07);
+        }
+
+
+        /* =========================
+           SECTION TITLE
+        ========================= */
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .title-left {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .section-title h2 {
+            color: #1665e8;
+            font-size: 16px;
+        }
+
+        .pin {
+            font-size: 16px;
+        }
+
+        .small-text {
+            font-size: 11px;
+            color: #8792a3;
+            margin-bottom: 12px;
+        }
+
+
+        /* =========================
+           ROUTE
+        ========================= */
+
+        .route-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .location {
+            flex: 1;
+            min-width: 0;
+            padding: 12px 10px;
+            border-radius: 12px;
+        }
+
+        .from {
+            background: #edfff7;
+            border: 1px solid #b9efd5;
+        }
+
+        .to {
+            background: #fff0f7;
+            border: 1px solid #f1c9dd;
+        }
+
+        .location-label {
+            font-size: 9px;
+            font-weight: bold;
+            color: #36a56f;
+            margin-bottom: 5px;
+        }
+
+        .to .location-label {
+            color: #e05c91;
+        }
+
+        .location-name {
+            color: #193f83;
+            font-size: 13px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        .arrow {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #edf3ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #1769e8;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .route-info {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #edf0f5;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .route-time {
+            font-size: 10px;
+            color: #7e8999;
+        }
+
+        .route-status {
+            background: #e5fff2;
+            color: #16a467;
+            border-radius: 20px;
+            padding: 6px 10px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           TRIP TIMER
+        ========================= */
+
+        .trip-card {
+            background: linear-gradient(
+                135deg,
+                #edf5ff,
+                #f5f3ff
+            );
+
+            border: 1px solid #dbe7fb;
+        }
+
+        .timer-title {
+            text-align: center;
+            color: #183d7e;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 35px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #174a9a;
+            margin: 5px 0 12px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-status {
+            text-align: center;
+            font-size: 11px;
+            color: #7c8798;
+            margin-bottom: 13px;
+        }
+
+        .timer-status.running {
+            color: #16a467;
+            font-weight: bold;
+        }
+
+        .timer-status.finished {
+            color: #6b55d9;
+            font-weight: bold;
+        }
+
+        .trip-buttons {
+            display: flex;
+            gap: 9px;
+        }
+
+        .trip-btn {
+            flex: 1;
+            height: 43px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .start-btn {
+            background: linear-gradient(
+                135deg,
+                #1fa66a,
+                #128c57
+            );
+        }
+
+        .end-btn {
+            background: linear-gradient(
+                135deg,
+                #ef5c6c,
+                #d93f51
+            );
+        }
+
+        .trip-btn:disabled {
+            background: #d6dbe3;
+            color: #929aa7;
+            cursor: not-allowed;
+        }
+
+        .trip-result {
+            display: none;
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 10px;
+            background: white;
+            border: 1px solid #e1e7f0;
+            text-align: center;
+        }
+
+        .trip-result.show {
+            display: block;
+        }
+
+        .result-label {
+            font-size: 10px;
+            color: #8a94a3;
+        }
+
+        .result-time {
+            color: #173d80;
+            font-size: 19px;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+
+
+        /* =========================
+           STOPS
+        ========================= */
+
+        .authority-badge {
+            background: #f1f3f7;
+            color: #818b99;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 5px 8px;
+            border-radius: 15px;
+        }
+
+        .stop-instruction {
+            color: #8792a2;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+
+        .stop {
+            border: 1px solid #e0e6ef;
+            border-radius: 13px;
+            padding: 10px;
+            margin-bottom: 8px;
+        }
+
+        .stop:last-child {
+            margin-bottom: 0;
+        }
+
+        .stop-top {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 8px;
+        }
+
+        .stop-number {
+            width: 29px;
+            height: 29px;
+            border-radius: 50%;
+            background: #edf3ff;
+            color: #1769e8;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .stop-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .stop-name {
+            color: #173d80;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .expected-time {
+            color: #8993a1;
+            font-size: 8px;
+            margin-top: 3px;
+        }
+
+        .pending {
+            background: #f1f3f7;
+            color: #87909c;
+            font-size: 8px;
+            border-radius: 10px;
+            padding: 4px 7px;
+        }
+
+        .stop-entry {
+            display: flex;
+            gap: 7px;
+        }
+
+        .count-input {
+            flex: 1;
+            min-width: 0;
+            height: 38px;
+
+            border: 1px solid #dce3ec;
+            border-radius: 9px;
+
+            padding: 0 10px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .count-input:focus {
+            border-color: #1769e8;
+            box-shadow: 0 0 0 3px rgba(23, 105, 232, 0.08);
+        }
+
+        .update-btn {
+            width: 66px;
+            height: 38px;
+            border: none;
+            border-radius: 9px;
+
+            background: #1769e8;
+            color: white;
+
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .update-btn:hover {
+            background: #0d58cc;
+        }
+
+        .update-btn:disabled {
+            background: #16a467;
+            cursor: default;
+        }
+
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        .message {
+            position: fixed;
+            left: 50%;
+            bottom: 75px;
+
+            transform: translateX(-50%);
+
+            width: calc(100% - 35px);
+            max-width: 390px;
+
+            padding: 11px 14px;
+            border-radius: 10px;
+
+            background: #172b4d;
+            color: white;
+
+            text-align: center;
+            font-size: 12px;
+
+            display: none;
+            z-index: 20;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+
+        /* =========================
+           BOTTOM NAVIGATION
+        ========================= */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+
+            width: 100%;
+            max-width: 430px;
+
+            height: 64px;
+            background: white;
+
+            border-top: 1px solid #e6eaf0;
+
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+            z-index: 10;
+        }
+
+        .nav-item {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+
+            color: #8993a2;
+            font-size: 10px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        .nav-item.active {
+            color: #1769e8;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           SIDE MENU
+        ========================= */
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -280px;
+
+            width: 260px;
+            height: 100vh;
+
+            background: white;
+            z-index: 30;
+
+            box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
+
+            transition: left 0.25s ease;
+
+            padding: 25px 18px;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .side-title {
+            color: #17458f;
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .menu-item {
+            width: 100%;
+            padding: 13px 10px;
+            border: none;
+            background: transparent;
+
+            text-align: left;
+            cursor: pointer;
+
+            border-radius: 9px;
+            color: #4d596a;
+            font-size: 14px;
+
+            margin-bottom: 5px;
+        }
+
+        .menu-item:hover {
+            background: #f0f5ff;
+            color: #1769e8;
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 18px;
+            right: 15px;
+
+            border: none;
+            background: transparent;
+
+            font-size: 22px;
+            cursor: pointer;
+            color: #596475;
+        }
+
+
+        /* =========================
+           OVERLAY
+        ========================= */
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.25);
+
+            z-index: 25;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 430px) {
+
+            body {
+                background: #f7f9fd;
+            }
+
+            .app {
+                max-width: 100%;
+            }
+
+            .bottom-nav {
+                max-width: 100%;
+            }
+
+            .timer {
+                font-size: 32px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <button
+            class="menu-btn"
+            id="menuButton"
+            type="button"
+            aria-label="Open menu"
+        >
+            ☰
+        </button>
+
+        <div class="logo">
+            🚌
+        </div>
+
+        <div class="header-text">
+            <div class="header-title">RFMS Fleet</div>
+            <div class="header-subtitle">Driver Panel</div>
+        </div>
+
+        <button
+            class="header-icon"
+            type="button"
+            id="notificationButton"
+        >
+            🔔
+        </button>
+
+        <button
+            class="header-icon"
+            type="button"
+            id="profileButton"
+        >
+            👤
+        </button>
+
+    </header>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="content">
+
+
+        <!-- ================= ROUTE CARD ================= -->
+
+        <section class="card">
+
+            <div class="section-title">
+
+                <div class="title-left">
+                    <span class="pin">📍</span>
+                    <h2>Assigned Route</h2>
+                </div>
+
+            </div>
+
+            <p class="small-text">
+                Route assigned by authority
+            </p>
+
+
+            <div class="route-box">
+
+                <div class="location from">
+
+                    <div class="location-label">
+                        FROM
+                    </div>
+
+                    <div class="location-name">
+                        Pondicherry
+                    </div>
+
+                </div>
+
+
+                <div class="arrow">
+                    →
+                </div>
+
+
+                <div class="location to">
+
+                    <div class="location-label">
+                        TO
+                    </div>
+
+                    <div class="location-name">
+                        HCL Technologies
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="route-info">
+
+                <div class="route-time">
+                    🗓 Today | 07:30 AM
+                </div>
+
+                <div
+                    class="route-status"
+                    id="routeStatus"
+                >
+                    • ON ROUTE
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= TRIP TIMER ================= -->
+
+        <section class="card trip-card">
+
+            <div class="timer-title">
+                🕐 Trip Timer
+            </div>
+
+            <div
+                class="timer"
+                id="timer"
+            >
+                00:00:00
+            </div>
+
+            <div
+                class="timer-status"
+                id="timerStatus"
+            >
+                Trip not started
+            </div>
+
+
+            <div class="trip-buttons">
+
+                <button
+                    class="trip-btn start-btn"
+                    id="startTripButton"
+                    type="button"
+                >
+                    ▶ START TRIP
+                </button>
+
+                <button
+                    class="trip-btn end-btn"
+                    id="endTripButton"
+                    type="button"
+                    disabled
+                >
+                    ■ END TRIP
+                </button>
+
+            </div>
+
+
+            <div
+                class="trip-result"
+                id="tripResult"
+            >
+
+                <div class="result-label">
+                    TOTAL TIME TAKEN
+                </div>
+
+                <div
+                    class="result-time"
+                    id="resultTime"
+                >
+                    00:00:00
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= INTERMEDIATE STOPS ================= -->
+
+        <section class="card">
+
+            <div class="section-title">
+
+                <div class="title-left">
+                    <span class="pin">📍</span>
+
+                    <h2>
+                        Intermediate Stops
+                    </h2>
+                </div>
+
+                <span class="authority-badge">
+                    Authority Managed
+                </span>
+
+            </div>
+
+
+            <p class="stop-instruction">
+                Enter worker headcount at each stop
+            </p>
+
+
+            <!-- STOP 1 -->
+
+            <div class="stop">
+
+                <div class="stop-top">
+
+                    <div class="stop-number">
+                        1
+                    </div>
+
+                    <div class="stop-info">
+
+                        <div class="stop-name">
+                            Villupuram
+                        </div>
+
+                        <div class="expected-time">
+                            Expected arrival: 08:15 AM
+                        </div>
+
+                    </div>
+
+                    <span
+                        class="pending"
+                        id="status1"
+                    >
+                        Pending
+                    </span>
+
+                </div>
+
+
+                <div class="stop-entry">
+
+                    <input
+                        type="text"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        class="count-input"
+                        id="count1"
+                        placeholder="Enter headcount"
+                    >
+
+                    <button
+                        type="button"
+                        class="update-btn"
+                        id="update1"
+                    >
+                        UPDATE
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STOP 2 -->
+
+            <div class="stop">
+
+                <div class="stop-top">
+
+                    <div class="stop-number">
+                        2
+                    </div>
+
+                    <div class="stop-info">
+
+                        <div class="stop-name">
+                            Tindivanam
+                        </div>
+
+                        <div class="expected-time">
+                            Expected arrival: 08:50 AM
+                        </div>
+
+                    </div>
+
+                    <span
+                        class="pending"
+                        id="status2"
+                    >
+                        Pending
+                    </span>
+
+                </div>
+
+
+                <div class="stop-entry">
+
+                    <input
+                        type="text"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        class="count-input"
+                        id="count2"
+                        placeholder="Enter headcount"
+                    >
+
+                    <button
+                        type="button"
+                        class="update-btn"
+                        id="update2"
+                    >
+                        UPDATE
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STOP 3 -->
+
+            <div class="stop">
+
+                <div class="stop-top">
+
+                    <div class="stop-number">
+                        3
+                    </div>
+
+                    <div class="stop-info">
+
+                        <div class="stop-name">
+                            Cuddalore
+                        </div>
+
+                        <div class="expected-time">
+                            Expected arrival: 09:30 AM
+                        </div>
+
+                    </div>
+
+                    <span
+                        class="pending"
+                        id="status3"
+                    >
+                        Pending
+                    </span>
+
+                </div>
+
+
+                <div class="stop-entry">
+
+                    <input
+                        type="text"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        class="count-input"
+                        id="count3"
+                        placeholder="Enter headcount"
+                    >
+
+                    <button
+                        type="button"
+                        class="update-btn"
+                        id="update3"
+                    >
+                        UPDATE
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STOP 4 -->
+
+            <div class="stop">
+
+                <div class="stop-top">
+
+                    <div class="stop-number">
+                        4
+                    </div>
+
+                    <div class="stop-info">
+
+                        <div class="stop-name">
+                            Chidambaram
+                        </div>
+
+                        <div class="expected-time">
+                            Expected arrival: 10:15 AM
+                        </div>
+
+                    </div>
+
+                    <span
+                        class="pending"
+                        id="status4"
+                    >
+                        Pending
+                    </span>
+
+                </div>
+
+
+                <div class="stop-entry">
+
+                    <input
+                        type="text"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        class="count-input"
+                        id="count4"
+                        placeholder="Enter headcount"
+                    >
+
+                    <button
+                        type="button"
+                        class="update-btn"
+                        id="update4"
+                    >
+                        UPDATE
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= MESSAGE ================= -->
+
+    <div
+        class="message"
+        id="message"
+        aria-live="polite"
+    ></div>
+
+
+    <!-- ================= BOTTOM NAVIGATION ================= -->
+
+    <nav class="bottom-nav">
+
+        <button
+            class="nav-item active"
+            type="button"
+            id="dashboardNav"
+        >
+            <span class="nav-icon">🏠</span>
+            Dashboard
+        </button>
+
+        <button
+            class="nav-item"
+            type="button"
+            id="routeNav"
+        >
+            <span class="nav-icon">📍</span>
+            Route
+        </button>
+
+        <button
+            class="nav-item"
+            type="button"
+            id="historyNav"
+        >
+            <span class="nav-icon">🕐</span>
+            History
+        </button>
+
+        <button
+            class="nav-item"
+            type="button"
+            id="settingsNav"
+        >
+            <span class="nav-icon">⚙️</span>
+            Settings
+        </button>
+
+    </nav>
+
+</div>
+
+
+
+<!-- ================= SIDE MENU ================= -->
+
+<div
+    class="overlay"
+    id="overlay"
+></div>
+
+
+<div
+    class="side-menu"
+    id="sideMenu"
+>
+
+    <button
+        class="close-menu"
+        id="closeMenu"
+        type="button"
+    >
+        ×
+    </button>
+
+    <div class="side-title">
+        RFMS Fleet
+    </div>
+
+    <button
+        class="menu-item"
+        type="button"
+        id="menuDashboard"
+    >
+        🏠 Dashboard
+    </button>
+
+    <button
+        class="menu-item"
+        type="button"
+        id="menuRoute"
+    >
+        📍 Assigned Route
+    </button>
+
+    <button
+        class="menu-item"
+        type="button"
+        id="menuHistory"
+    >
+        🕐 Trip History
+    </button>
+
+    <button
+        class="menu-item"
+        type="button"
+        id="menuSettings"
+    >
+        ⚙️ Settings
+    </button>
+
+</div>
+
+
+
+<script>
+
+    /* =========================================
+       TIMER VARIABLES
+    ========================================= */
+
+    let timerInterval = null;
+
+    let startTime = null;
+
+    let elapsedSeconds = 0;
+
+    let tripRunning = false;
+
+
+    /* =========================================
+       GET ELEMENTS
+    ========================================= */
+
+    const timer =
+        document.getElementById("timer");
+
+    const timerStatus =
+        document.getElementById("timerStatus");
+
+    const startTripButton =
+        document.getElementById("startTripButton");
+
+    const endTripButton =
+        document.getElementById("endTripButton");
+
+    const tripResult =
+        document.getElementById("tripResult");
+
+    const resultTime =
+        document.getElementById("resultTime");
+
+    const routeStatus =
+        document.getElementById("routeStatus");
+
+    const message =
+        document.getElementById("message");
+
+
+    /* =========================================
+       FORMAT TIMER
+    ========================================= */
+
+    function formatTime(totalSeconds) {
+
+        const hours =
+            Math.floor(totalSeconds / 3600);
+
+        const minutes =
+            Math.floor(
+                (totalSeconds % 3600) / 60
+            );
+
+        const seconds =
+            totalSeconds % 60;
+
+
+        return (
+            String(hours).padStart(2, "0")
+            + ":" +
+            String(minutes).padStart(2, "0")
+            + ":" +
+            String(seconds).padStart(2, "0")
+        );
+    }
+
+
+    /* =========================================
+       UPDATE TIMER
+    ========================================= */
+
+    function updateTimer() {
+
+        if (!tripRunning || !startTime) {
+            return;
+        }
+
+        const now = Date.now();
+
+        elapsedSeconds =
+            Math.floor(
+                (now - startTime) / 1000
+            );
+
+        timer.textContent =
+            formatTime(elapsedSeconds);
+    }
+
+
+    /* =========================================
+       START TRIP
+    ========================================= */
+
+    startTripButton.addEventListener(
+        "click",
+        function () {
+
+            if (tripRunning) {
+                return;
+            }
+
+
+            /* Start timer */
+
+            startTime = Date.now();
+
+            elapsedSeconds = 0;
+
+            tripRunning = true;
+
+
+            timer.textContent =
+                "00:00:00";
+
+
+            timerStatus.textContent =
+                "Trip is currently running";
+
+            timerStatus.classList.add("running");
+
+            timerStatus.classList.remove("finished");
+
+
+            /* Change route status */
+
+            routeStatus.textContent =
+                "• TRIP RUNNING";
+
+            routeStatus.style.background =
+                "#e5fff2";
+
+            routeStatus.style.color =
+                "#16a467";
+
+
+            /* Button states */
+
+            startTripButton.disabled = true;
+
+            endTripButton.disabled = false;
+
+
+            /* Hide previous result */
+
+            tripResult.classList.remove("show");
+
+
+            /* Start timer */
+
+            timerInterval =
+                setInterval(
+                    updateTimer,
+                    1000
+                );
+
+
+            showMessage(
+                "Trip started. Timer is running."
+            );
+        }
+    );
+
+
+    /* =========================================
+       END TRIP
+    ========================================= */
+
+    endTripButton.addEventListener(
+        "click",
+        function () {
+
+            if (!tripRunning) {
+                return;
+            }
+
+
+            /* Calculate final time */
+
+            updateTimer();
+
+
+            tripRunning = false;
+
+
+            /* Stop timer */
+
+            clearInterval(timerInterval);
+
+            timerInterval = null;
+
+
+            /* Update status */
+
+            timerStatus.textContent =
+                "Trip completed";
+
+            timerStatus.classList.remove("running");
+
+            timerStatus.classList.add("finished");
+
+
+            /* Route status */
+
+            routeStatus.textContent =
+                "• TRIP COMPLETED";
+
+            routeStatus.style.background =
+                "#eeeaff";
+
+            routeStatus.style.color =
+                "#6b55d9";
+
+
+            /* Buttons */
+
+            endTripButton.disabled = true;
+
+            startTripButton.disabled = true;
+
+
+            /* Show final time */
+
+            resultTime.textContent =
+                formatTime(elapsedSeconds);
+
+            tripResult.classList.add("show");
+
+
+            showMessage(
+                "Trip ended. Time taken: "
+                + formatTime(elapsedSeconds)
+            );
+        }
+    );
+
+
+    /* =========================================
+       HEADCOUNT UPDATE
+    ========================================= */
+
+    function updateHeadcount(number) {
+
+        const input =
+            document.getElementById(
+                "count" + number
+            );
+
+        const button =
+            document.getElementById(
+                "update" + number
+            );
+
+        const status =
+            document.getElementById(
+                "status" + number
+            );
+
+
+        const count =
+            input.value.trim();
+
+
+        /* Empty check */
+
+        if (count === "") {
+
+            showMessage(
+                "Please enter the worker headcount."
+            );
+
+            input.focus();
+
+            return;
+        }
+
+
+        /* Number validation */
+
+        if (!/^[0-9]+$/.test(count)) {
+
+            showMessage(
+                "Please enter numbers only."
+            );
+
+            input.focus();
+
+            return;
+        }
+
+
+        const numericCount =
+            Number(count);
+
+
+        /* Prevent unrealistic values */
+
+        if (
+            !Number.isSafeInteger(numericCount) ||
+            numericCount < 0 ||
+            numericCount > 9999
+        ) {
+
+            showMessage(
+                "Please enter a valid headcount."
+            );
+
+            input.focus();
+
+            return;
+        }
+
+
+        /* Update status */
+
+        status.textContent =
+            "Updated ✓";
+
+        status.style.background =
+            "#e5fff2";
+
+        status.style.color =
+            "#16a467";
+
+
+        button.textContent =
+            "UPDATED ✓";
+
+        button.disabled = true;
+
+        input.disabled = true;
+
+
+        showMessage(
+            "Headcount updated: "
+            + numericCount
+            + " workers."
+        );
+    }
+
+
+    /* =========================================
+       UPDATE BUTTONS
+    ========================================= */
+
+    document
+        .getElementById("update1")
+        .addEventListener(
+            "click",
+            function () {
+                updateHeadcount(1);
+            }
+        );
+
+
+    document
+        .getElementById("update2")
+        .addEventListener(
+            "click",
+            function () {
+                updateHeadcount(2);
+            }
+        );
+
+
+    document
+        .getElementById("update3")
+        .addEventListener(
+            "click",
+            function () {
+                updateHeadcount(3);
+            }
+        );
+
+
+    document
+        .getElementById("update4")
+        .addEventListener(
+            "click",
+            function () {
+                updateHeadcount(4);
+            }
+        );
+
+
+    /* =========================================
+       MESSAGE FUNCTION
+    ========================================= */
+
+    let messageTimeout;
+
+
+    function showMessage(text) {
+
+        message.textContent = text;
+
+        message.classList.add("show");
+
+
+        clearTimeout(messageTimeout);
+
+
+        messageTimeout =
+            setTimeout(
+                function () {
+                    message.classList.remove("show");
+                },
+                2500
+            );
+    }
+
+
+    /* =========================================
+       SIDE MENU
+    ========================================= */
+
+    const menuButton =
+        document.getElementById("menuButton");
+
+    const closeMenu =
+        document.getElementById("closeMenu");
+
+    const sideMenu =
+        document.getElementById("sideMenu");
+
+    const overlay =
+        document.getElementById("overlay");
+
+
+    function openSideMenu() {
+
+        sideMenu.classList.add("open");
+
+        overlay.classList.add("show");
+    }
+
+
+    function closeSideMenu() {
+
+        sideMenu.classList.remove("open");
+
+        overlay.classList.remove("show");
+    }
+
+
+    menuButton.addEventListener(
+        "click",
+        openSideMenu
+    );
+
+
+    closeMenu.addEventListener(
+        "click",
+        closeSideMenu
+    );
+
+
+    overlay.addEventListener(
+        "click",
+        closeSideMenu
+    );
+
+
+    /* =========================================
+       HEADER BUTTONS
+    ========================================= */
+
+    document
+        .getElementById("notificationButton")
+        .addEventListener(
+            "click",
+            function () {
+
+                showMessage(
+                    "No new notifications."
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById("profileButton")
+        .addEventListener(
+            "click",
+            function () {
+
+                showMessage(
+                    "Driver profile."
+                );
+
+            }
+        );
+
+
+    /* =========================================
+       NAVIGATION BUTTONS
+    ========================================= */
+
+    document
+        .getElementById("dashboardNav")
+        .addEventListener(
+            "click",
+            function () {
+
+                showMessage(
+                    "You are already on Dashboard."
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById("routeNav")
+        .addEventListener(
+            "click",
+            function () {
+
+                document
+                    .querySelector(".card")
+                    .scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            }
+        );
+
+
+    document
+        .getElementById("historyNav")
+        .addEventListener(
+            "click",
+            function () {
+
+                showMessage(
+                    "Trip history will be available here."
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById("settingsNav")
+        .addEventListener(
+            "click",
+            function () {
+
+                showMessage(
+                    "Settings will be available here."
+                );
+
+            }
+        );
+
+
+    /* =========================================
+       SIDE MENU BUTTONS
+    ========================================= */
+
+    document
+        .getElementById("menuDashboard")
+        .addEventListener(
+            "click",
+            function () {
+
+                closeSideMenu();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+
+    document
+        .getElementById("menuRoute")
+        .addEventListener(
+            "click",
+            function () {
+
+                closeSideMenu();
+
+                document
+                    .querySelector(".card")
+                    .scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            }
+        );
+
+
+    document
+        .getElementById("menuHistory")
+        .addEventListener(
+            "click",
+            function () {
+
+                closeSideMenu();
+
+                showMessage(
+                    "Trip history will be available here."
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById("menuSettings")
+        .addEventListener(
+            "click",
+            function () {
+
+                closeSideMenu();
+
+                showMessage(
+                    "Settings will be available here."
+                );
+
+            }
+        );
+
+
+    /* =========================================
+       INITIAL STATE
+    ========================================= */
+
+    timer.textContent =
+        "00:00:00";
+
+    timerStatus.textContent =
+        "Trip not started";
+
+</script>
+
+</body>
+</html>

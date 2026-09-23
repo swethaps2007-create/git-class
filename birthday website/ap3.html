@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Authority Profile</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #eef1f5;
+    display: flex;
+    justify-content: center;
+}
+
+.app {
+    width: 540px;
+    min-height: 100vh;
+    background: white;
+    position: relative;
+    padding-bottom: 85px;
+}
+
+/* HEADER */
+
+.header {
+    height: 60px;
+    background: #0751b9;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.back {
+    font-size: 30px;
+    margin-right: 25px;
+    cursor: pointer;
+}
+
+/* PROFILE BACKGROUND */
+
+.profile-bg {
+    height: 140px;
+    background-color: #edf6ff;
+
+    background-image:
+        radial-gradient(#dcecff 3px, transparent 3px);
+
+    background-size: 35px 35px;
+}
+
+/* PROFILE */
+
+.profile-section {
+    text-align: center;
+    position: relative;
+    margin-top: -75px;
+}
+
+.profile-pic {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+}
+
+.camera {
+    position: absolute;
+    right: 150px;
+    bottom: 25px;
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+    background: #0751b9;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 3px solid white;
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+.camera:hover {
+    background: #063e8c;
+}
+
+.profile-name {
+    margin-top: -2px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.email {
+    margin-top: 7px;
+    color: #666;
+    font-size: 14px;
+}
+
+.role {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 13px;
+    background: #e8f0ff;
+    color: #0751b9;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* OPTIONS */
+
+.options {
+    margin: 28px 16px 20px;
+
+    border: 1px solid #ddd;
+    border-radius: 11px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.option {
+    min-height: 72px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 10px 15px;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    cursor: pointer;
+
+    transition: background 0.2s;
+}
+
+.option:last-child {
+    border-bottom: none;
+}
+
+.option:hover {
+    background: #f5f9ff;
+}
+
+.icon {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
+
+    background: #edf4ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+
+    margin-right: 14px;
+}
+
+.option-text {
+    flex: 1;
+}
+
+.option-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #111;
+}
+
+.option-subtitle {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.arrow {
+    font-size: 27px;
+    color: #777;
+}
+
+/* LOGOUT */
+
+.logout {
+    margin: 20px 16px;
+
+    height: 58px;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: red;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+
+    transition: 0.2s;
+}
+
+.logout:hover {
+    background: #fff2f2;
+}
+
+/* BOTTOM NAVIGATION */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+
+    width: 540px;
+    height: 75px;
+
+    background: white;
+
+    border-top: 1px solid #ddd;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    z-index: 10;
+}
+
+.nav-item {
+    text-align: center;
+
+    color: #777;
+
+    font-size: 12px;
+
+    cursor: pointer;
+
+    min-width: 70px;
+}
+
+.nav-icon {
+    font-size: 21px;
+    margin-bottom: 5px;
+}
+
+.nav-item.active {
+    color: #0751b9;
+    font-weight: bold;
+}
+
+.nav-item:hover {
+    color: #0751b9;
+}
+
+/* HIDDEN FILE INPUT */
+
+#photoInput {
+    display: none;
+}
+
+/* POPUP */
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.45);
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 100;
+}
+
+.modal-box {
+    width: 350px;
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding: 25px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.modal-box h2 {
+    margin-bottom: 18px;
+    color: #0751b9;
+}
+
+.modal-box input {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+.modal-box input:focus {
+    border-color: #0751b9;
+}
+
+.buttons {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 18px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.cancel {
+    background: #eee;
+}
+
+.save {
+    background: #0751b9;
+    color: white;
+}
+
+.delete {
+    background: red;
+    color: white;
+}
+
+/* SUCCESS MESSAGE */
+
+.toast {
+    position: fixed;
+
+    bottom: 95px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    background: #222;
+    color: white;
+
+    padding: 12px 20px;
+
+    border-radius: 8px;
+
+    display: none;
+
+    z-index: 200;
+}
+
+/* MOBILE */
+
+@media(max-width:540px) {
+
+    .app {
+        width: 100%;
+    }
+
+    .bottom-nav {
+        width: 100%;
+    }
+
+    .camera {
+        right: 27%;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div class="back" onclick="goBack()">
+        ←
+    </div>
+
+    Authority Profile
+
+</div>
+
+
+<!-- PROFILE BACKGROUND -->
+
+<div class="profile-bg"></div>
+
+
+<!-- PROFILE -->
+
+<div class="profile-section">
+
+    <img
+        id="profileImage"
+        src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=300&q=80"
+        class="profile-pic"
+    >
+
+    <div
+        class="camera"
+        onclick="changePhoto()"
+    >
+        📷
+    </div>
+
+    <div
+        class="profile-name"
+        id="profileName"
+    >
+        Admin User
+    </div>
+
+    <div
+        class="email"
+        id="profileEmail"
+    >
+        admin@company.com
+    </div>
+
+    <div class="role">
+        Authority
+    </div>
+
+</div>
+
+
+<!-- HIDDEN PHOTO INPUT -->
+
+<input
+    type="file"
+    id="photoInput"
+    accept="image/*"
+    onchange="updatePhoto(event)"
+>
+
+
+<!-- OPTIONS -->
+
+<div class="options">
+
+
+    <!-- PROFILE PHOTO -->
+
+    <div
+        class="option"
+        onclick="changePhoto()"
+    >
+
+        <div class="icon">
+            👤
+        </div>
+
+        <div class="option-text">
+
+            <div class="option-title">
+                Profile Photo
+            </div>
+
+        </div>
+
+        <div class="arrow">
+            ›
+        </div>
+
+    </div>
+
+
+    <!-- NAME -->
+
+    <div
+        class="option"
+        onclick="openEdit('name')"
+    >
+
+        <div class="icon">
+            ♙
+        </div>
+
+        <div class="option-text">
+
+            <div class="option-title">
+                Name
+            </div>
+
+            <div
+                class="option-subtitle"
+                id="nameValue"
+            >
+                Admin User
+            </div>
+
+        </div>
+
+        <div class="arrow">
+            ›
+        </div>
+
+    </div>
+
+
+    <!-- EMAIL -->
+
+    <div
+        class="option"
+        onclick="openEdit('email')"
+    >
+
+        <div class="icon">
+            ✉
+        </div>
+
+        <div class="option-text">
+
+            <div class="option-title">
+                Email
+            </div>
+
+            <div
+                class="option-subtitle"
+                id="emailValue"
+            >
+                admin@company.com
+            </div>
+
+        </div>
+
+        <div class="arrow">
+            ›
+        </div>
+
+    </div>
+
+
+    <!-- PASSWORD -->
+
+    <div
+        class="option"
+        onclick="openPassword()"
+    >
+
+        <div class="icon">
+            🔒
+        </div>
+
+        <div class="option-text">
+
+            <div class="option-title">
+                Forgot Password
+            </div>
+
+            <div class="option-subtitle">
+                Reset your password
+            </div>
+
+        </div>
+
+        <div class="arrow">
+            ›
+        </div>
+
+    </div>
+
+
+    <!-- PHONE -->
+
+    <div
+        class="option"
+        onclick="openEdit('phone')"
+    >
+
+        <div class="icon">
+            ☎
+        </div>
+
+        <div class="option-text">
+
+            <div class="option-title">
+                Phone Number
+            </div>
+
+            <div
+                class="option-subtitle"
+                id="phoneValue"
+            >
+                +91 98765 43210
+            </div>
+
+        </div>
+
+        <div class="arrow">
+            ›
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- LOGOUT -->
+
+<div
+    class="logout"
+    onclick="openLogout()"
+>
+    ⇥ &nbsp; Logout
+</div>
+
+
+<!-- BOTTOM NAVIGATION -->
+
+<div class="bottom-nav">
+
+
+    <div
+        class="nav-item"
+        onclick="navigate('Dashboard')"
+    >
+
+        <div class="nav-icon">
+            ▦
+        </div>
+
+        Dashboard
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        onclick="navigate('Route')"
+    >
+
+        <div class="nav-icon">
+            🚌
+        </div>
+
+        Route
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        onclick="navigate('Alerts')"
+    >
+
+        <div class="nav-icon">
+            ♧
+        </div>
+
+        Alerts
+
+    </div>
+
+
+    <div
+        class="nav-item active"
+        onclick="navigate('Profile')"
+    >
+
+        <div class="nav-icon">
+            ●
+        </div>
+
+        Profile
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- EDIT MODAL -->
+
+<div
+    class="modal"
+    id="editModal"
+>
+
+<div class="modal-box">
+
+    <h2 id="modalTitle">
+        Edit
+    </h2>
+
+    <input
+        type="text"
+        id="editInput"
+    >
+
+    <div class="buttons">
+
+        <button
+            class="btn cancel"
+            onclick="closeModal()"
+        >
+            Cancel
+        </button>
+
+        <button
+            class="btn save"
+            onclick="saveEdit()"
+        >
+            Save
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- PASSWORD MODAL -->
+
+<div
+    class="modal"
+    id="passwordModal"
+>
+
+<div class="modal-box">
+
+    <h2>
+        Reset Password
+    </h2>
+
+    <input
+        type="email"
+        value="admin@company.com"
+        placeholder="Enter your email"
+    >
+
+    <div class="buttons">
+
+        <button
+            class="btn cancel"
+            onclick="closePassword()"
+        >
+            Cancel
+        </button>
+
+        <button
+            class="btn save"
+            onclick="sendReset()"
+        >
+            Send
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- LOGOUT MODAL -->
+
+<div
+    class="modal"
+    id="logoutModal"
+>
+
+<div class="modal-box">
+
+    <h2>
+        Logout
+    </h2>
+
+    <p>
+        Are you sure you want to logout?
+    </p>
+
+    <div class="buttons">
+
+        <button
+            class="btn cancel"
+            onclick="closeLogout()"
+        >
+            Cancel
+        </button>
+
+        <button
+            class="btn delete"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+>
+    Saved successfully
+</div>
+
+
+<script>
+
+/* CURRENT EDIT */
+
+let currentEdit = "";
+
+
+/* CHANGE PHOTO */
+
+function changePhoto() {
+
+    document.getElementById("photoInput").click();
+
+}
+
+
+/* UPDATE PHOTO */
+
+function updatePhoto(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        document.getElementById("profileImage").src =
+            e.target.result;
+
+        showToast("Profile photo updated");
+
+    };
+
+    reader.readAsDataURL(file);
+
+}
+
+
+/* OPEN EDIT */
+
+function openEdit(type) {
+
+    currentEdit = type;
+
+    const modal =
+        document.getElementById("editModal");
+
+    const input =
+        document.getElementById("editInput");
+
+    const title =
+        document.getElementById("modalTitle");
+
+
+    if (type === "name") {
+
+        title.innerText = "Edit Name";
+
+        input.value =
+            document.getElementById("nameValue").innerText;
+
+    }
+
+
+    if (type === "email") {
+
+        title.innerText = "Edit Email";
+
+        input.value =
+            document.getElementById("emailValue").innerText;
+
+    }
+
+
+    if (type === "phone") {
+
+        title.innerText = "Edit Phone Number";
+
+        input.value =
+            document.getElementById("phoneValue").innerText;
+
+    }
+
+
+    modal.style.display = "flex";
+
+    input.focus();
+
+}
+
+
+/* SAVE EDIT */
+
+function saveEdit() {
+
+    const value =
+        document.getElementById("editInput").value.trim();
+
+
+    if (value === "") {
+
+        alert("Please enter a value.");
+
+        return;
+
+    }
+
+
+    if (currentEdit === "name") {
+
+        document.getElementById("nameValue").innerText =
+            value;
+
+        document.getElementById("profileName").innerText =
+            value;
+
+    }
+
+
+    if (currentEdit === "email") {
+
+        document.getElementById("emailValue").innerText =
+            value;
+
+        document.getElementById("profileEmail").innerText =
+            value;
+
+    }
+
+
+    if (currentEdit === "phone") {
+
+        document.getElementById("phoneValue").innerText =
+            value;
+
+    }
+
+
+    closeModal();
+
+    showToast("Details updated successfully");
+
+}
+
+
+/* CLOSE EDIT */
+
+function closeModal() {
+
+    document.getElementById("editModal")
+        .style.display = "none";
+
+}
+
+
+/* PASSWORD */
+
+function openPassword() {
+
+    document.getElementById("passwordModal")
+        .style.display = "flex";
+
+}
+
+
+function closePassword() {
+
+    document.getElementById("passwordModal")
+        .style.display = "none";
+
+}
+
+
+function sendReset() {
+
+    closePassword();
+
+    showToast("Password reset link sent");
+
+}
+
+
+/* LOGOUT */
+
+function openLogout() {
+
+    document.getElementById("logoutModal")
+        .style.display = "flex";
+
+}
+
+
+function closeLogout() {
+
+    document.getElementById("logoutModal")
+        .style.display = "none";
+
+}
+
+
+function logout() {
+
+    closeLogout();
+
+    showToast("Logged out successfully");
+
+}
+
+
+/* BOTTOM NAVIGATION */
+
+function navigate(page) {
+
+    if (page === "Profile") {
+        return;
+    }
+
+    showToast(page + " clicked");
+
+}
+
+
+/* BACK BUTTON */
+
+function goBack() {
+
+    showToast("Back button clicked");
+
+}
+
+
+/* TOAST */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.innerText = message;
+
+    toast.style.display = "block";
+
+
+    setTimeout(function() {
+
+        toast.style.display = "none";
+
+    }, 2000);
+
+}
+
+</script>
+
+</body>
+</html>

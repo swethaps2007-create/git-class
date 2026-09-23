@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Route Calendar</title>
+
+    <style>
+
+        /* ==============================
+           BASIC RESET
+        ============================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        /* ==============================
+           PAGE
+        ============================== */
+
+        body {
+            min-height: 100vh;
+            background: #cfe3fa;
+            padding: 30px;
+            color: #143d68;
+        }
+
+
+        /* ==============================
+           MAIN CALENDAR CARD
+        ============================== */
+
+        .calendar-container {
+            max-width: 1100px;
+            margin: auto;
+
+            background: white;
+
+            border-radius: 25px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 15px 35px rgba(31, 74, 130, 0.15);
+
+            position: relative;
+        }
+
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+        }
+
+
+        .route-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #143d68;
+        }
+
+
+        /* Three dot button */
+
+        .menu-button {
+            border: none;
+
+            background: transparent;
+
+            font-size: 25px;
+
+            color: #555;
+
+            cursor: pointer;
+
+            padding: 8px 12px;
+
+            border-radius: 8px;
+        }
+
+
+        .menu-button:hover {
+            background: #edf5ff;
+        }
+
+
+        /* ==============================
+           MONTH NAVIGATION
+        ============================== */
+
+        .month-navigation {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .month-navigation button {
+            width: 42px;
+            height: 42px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: #e5f0ff;
+
+            color: #14518a;
+
+            font-size: 24px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .month-navigation button:hover {
+            background: #c9e0fb;
+
+            transform: scale(1.05);
+        }
+
+
+        #monthYear {
+            min-width: 180px;
+
+            text-align: center;
+
+            font-size: 21px;
+
+            font-weight: bold;
+
+            color: #143d68;
+        }
+
+
+        /* ==============================
+           WEEK DAYS
+        ============================== */
+
+        .weekdays {
+            display: grid;
+
+            grid-template-columns:
+                repeat(7, 1fr);
+
+            gap: 8px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .weekday {
+            text-align: center;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            color: #777;
+
+            padding: 8px;
+        }
+
+
+        /* ==============================
+           CALENDAR GRID
+        ============================== */
+
+        .calendar-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(7, 1fr);
+
+            gap: 8px;
+        }
+
+
+        /* ==============================
+           EACH CALENDAR DAY
+        ============================== */
+
+        .day {
+            min-height: 115px;
+
+            border: 1px solid #d9e0e8;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            padding: 9px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+        }
+
+
+        .day:hover {
+            border-color: #3575e5;
+
+            box-shadow:
+                0 4px 12px
+                rgba(53, 117, 229, 0.12);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* Empty calendar boxes */
+
+        .empty-day {
+            border: none;
+
+            background: transparent;
+
+            cursor: default;
+        }
+
+
+        .empty-day:hover {
+            transform: none;
+
+            box-shadow: none;
+        }
+
+
+        /* ==============================
+           TOP INFORMATION
+        ============================== */
+
+        .day-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        /* Increased font */
+
+        .status {
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+
+        /* Green On */
+
+        .on {
+            color: #219653;
+        }
+
+
+        /* Red Late */
+
+        .late {
+            color: #c62828;
+        }
+
+
+        /* Increased headcount font */
+
+        .attendance {
+            font-size: 14px;
+
+            color: #777;
+        }
+
+
+        /* ==============================
+           DATE NUMBER
+           KEEPING THIS UNCHANGED
+        ============================== */
+
+        .date-number {
+            text-align: center;
+
+            font-size: 20px;
+
+            font-weight: 500;
+
+            color: #111;
+
+            margin: 12px 0;
+        }
+
+
+        /* ==============================
+           UTILIZATION
+        ============================== */
+
+        .percentage {
+            font-size: 14px;
+
+            color: #555;
+        }
+
+
+        /* ==============================
+           SELECTED DATE
+        ============================== */
+
+        .selected {
+            border: 2px solid #3575e5;
+
+            background: #f1f7ff;
+        }
+
+
+        /* ==============================
+           DETAILS PANEL
+        ============================== */
+
+        .details-panel {
+            margin-top: 25px;
+
+            padding: 20px;
+
+            background: #edf5ff;
+
+            border-radius: 15px;
+
+            display: none;
+        }
+
+
+        .details-panel.show {
+            display: block;
+        }
+
+
+        .details-panel h3 {
+            color: #14518a;
+
+            font-size: 19px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .details-panel p {
+            font-size: 15px;
+
+            color: #555;
+
+            margin: 7px 0;
+        }
+
+
+        .details-panel strong {
+            color: #143d68;
+        }
+
+
+        /* ==============================
+           THREE DOT MENU
+        ============================== */
+
+        .menu-popup {
+            position: absolute;
+
+            right: 35px;
+
+            top: 75px;
+
+            background: white;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.15);
+
+            padding: 8px;
+
+            display: none;
+
+            z-index: 10;
+        }
+
+
+        .menu-popup.show {
+            display: block;
+        }
+
+
+        .menu-popup button {
+            display: block;
+
+            width: 150px;
+
+            border: none;
+
+            background: white;
+
+            padding: 12px;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            color: #333;
+        }
+
+
+        .menu-popup button:hover {
+            background: #edf5ff;
+
+            color: #14518a;
+        }
+
+
+        /* ==============================
+           TABLET / SMALL LAPTOP
+        ============================== */
+
+        @media (max-width: 800px) {
+
+            body {
+                padding: 15px;
+            }
+
+
+            .calendar-container {
+                padding: 18px;
+            }
+
+
+            .route-title {
+                font-size: 19px;
+            }
+
+
+            .day {
+                min-height: 95px;
+
+                padding: 7px;
+            }
+
+
+            .date-number {
+                font-size: 20px;
+            }
+
+
+            .status,
+            .attendance {
+                font-size: 13px;
+            }
+
+
+            .percentage {
+                font-size: 13px;
+            }
+
+        }
+
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        @media (max-width: 600px) {
+
+            .calendar-container {
+                overflow-x: auto;
+            }
+
+
+            .weekdays,
+            .calendar-grid {
+                min-width: 650px;
+            }
+
+
+            .month-navigation {
+                min-width: 650px;
+            }
+
+
+            .route-title {
+                white-space: nowrap;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================
+         MAIN CALENDAR
+    ================================== -->
+
+    <div class="calendar-container">
+
+
+        <!-- HEADER -->
+
+        <div class="calendar-header">
+
+            <h1 class="route-title">
+                Route-1: Pondicherry to office
+            </h1>
+
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                type="button"
+            >
+                ⋯
+            </button>
+
+        </div>
+
+
+        <!-- THREE DOT MENU -->
+
+        <div
+            class="menu-popup"
+            id="menuPopup"
+        >
+
+            <button
+                type="button"
+                id="todayButton"
+            >
+                Go to today
+            </button>
+
+
+            <button
+                type="button"
+                id="closeMenu"
+            >
+                Close menu
+            </button>
+
+        </div>
+
+
+        <!-- MONTH NAVIGATION -->
+
+        <div class="month-navigation">
+
+            <button
+                type="button"
+                id="previousMonth"
+            >
+                ‹
+            </button>
+
+
+            <div id="monthYear"></div>
+
+
+            <button
+                type="button"
+                id="nextMonth"
+            >
+                ›
+            </button>
+
+        </div>
+
+
+        <!-- WEEKDAYS -->
+
+        <div class="weekdays">
+
+            <div class="weekday">Mon</div>
+
+            <div class="weekday">Tue</div>
+
+            <div class="weekday">Wed</div>
+
+            <div class="weekday">Thu</div>
+
+            <div class="weekday">Fri</div>
+
+            <div class="weekday">Sat</div>
+
+            <div class="weekday">Sun</div>
+
+        </div>
+
+
+        <!-- CALENDAR -->
+
+        <div
+            class="calendar-grid"
+            id="calendarGrid"
+        ></div>
+
+
+        <!-- =================================
+             SELECTED DATE DETAILS
+        ================================== -->
+
+        <div
+            class="details-panel"
+            id="detailsPanel"
+        >
+
+            <h3 id="detailsTitle">
+                Day Details
+            </h3>
+
+
+            <p>
+
+                <strong>
+                    Status:
+                </strong>
+
+                <span id="detailsStatus"></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Headcount:
+                </strong>
+
+                <span id="detailsHeadcount"></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Utilization:
+                </strong>
+
+                <span id="detailsPercentage"></span>
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+
+
+        /* =================================
+           CURRENT MONTH
+        ================================== */
+
+        let currentDate = new Date();
+
+
+
+        /* =================================
+           CALENDAR DATA
+        ================================== */
+
+        const calendarData = {
+
+            1: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            2: {
+                status: "On",
+                headcount: "11/12",
+                percentage: "92%"
+            },
+
+            3: {
+                status: "On",
+                headcount: "10/12",
+                percentage: "83%"
+            },
+
+            4: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            5: {
+                status: "On",
+                headcount: "9/12",
+                percentage: "75%"
+            },
+
+            6: {
+                status: "Late",
+                headcount: "8/12",
+                percentage: "67%"
+            },
+
+            7: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            8: {
+                status: "On",
+                headcount: "11/12",
+                percentage: "92%"
+            },
+
+            9: {
+                status: "Late",
+                headcount: "7/12",
+                percentage: "58%"
+            },
+
+            10: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            11: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            12: {
+                status: "On",
+                headcount: "10/12",
+                percentage: "83%"
+            },
+
+            13: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            14: {
+                status: "On",
+                headcount: "9/12",
+                percentage: "75%"
+            },
+
+            15: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            16: {
+                status: "Late",
+                headcount: "8/12",
+                percentage: "67%"
+            },
+
+            17: {
+                status: "On",
+                headcount: "11/12",
+                percentage: "92%"
+            },
+
+            18: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            19: {
+                status: "On",
+                headcount: "10/12",
+                percentage: "83%"
+            },
+
+            20: {
+                status: "Late",
+                headcount: "7/12",
+                percentage: "58%"
+            },
+
+            21: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            22: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            23: {
+                status: "On",
+                headcount: "9/12",
+                percentage: "75%"
+            },
+
+            24: {
+                status: "On",
+                headcount: "11/12",
+                percentage: "92%"
+            },
+
+            25: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            26: {
+                status: "Late",
+                headcount: "8/12",
+                percentage: "67%"
+            },
+
+            27: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            28: {
+                status: "On",
+                headcount: "10/12",
+                percentage: "83%"
+            },
+
+            29: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            30: {
+                status: "On",
+                headcount: "11/12",
+                percentage: "92%"
+            }
+
+        };
+
+
+
+        /* =================================
+           MONTH NAMES
+        ================================== */
+
+        const monthNames = [
+
+            "January",
+
+            "February",
+
+            "March",
+
+            "April",
+
+            "May",
+
+            "June",
+
+            "July",
+
+            "August",
+
+            "September",
+
+            "October",
+
+            "November",
+
+            "December"
+
+        ];
+
+
+
+        /* =================================
+           GET HTML ELEMENTS
+        ================================== */
+
+        const calendarGrid =
+            document.getElementById(
+                "calendarGrid"
+            );
+
+
+        const monthYear =
+            document.getElementById(
+                "monthYear"
+            );
+
+
+        const detailsPanel =
+            document.getElementById(
+                "detailsPanel"
+            );
+
+
+        const detailsTitle =
+            document.getElementById(
+                "detailsTitle"
+            );
+
+
+        const detailsStatus =
+            document.getElementById(
+                "detailsStatus"
+            );
+
+
+        const detailsHeadcount =
+            document.getElementById(
+                "detailsHeadcount"
+            );
+
+
+        const detailsPercentage =
+            document.getElementById(
+                "detailsPercentage"
+            );
+
+
+
+        /* =================================
+           CREATE CALENDAR
+        ================================== */
+
+        function createCalendar() {
+
+
+            /* Clear old calendar */
+
+            calendarGrid.innerHTML = "";
+
+
+            /* Get current year */
+
+            const year =
+                currentDate.getFullYear();
+
+
+            /* Get current month */
+
+            const month =
+                currentDate.getMonth();
+
+
+            /* Show month + year */
+
+            monthYear.textContent =
+                monthNames[month] +
+                " " +
+                year;
+
+
+
+            /* Find first day */
+
+            let firstDay =
+                new Date(
+                    year,
+                    month,
+                    1
+                ).getDay();
+
+
+            /*
+                JavaScript:
+                Sunday = 0
+                Monday = 1
+
+                Convert to:
+                Monday = 0
+            */
+
+            firstDay =
+                firstDay === 0
+                    ? 6
+                    : firstDay - 1;
+
+
+
+            /* Number of days */
+
+            const daysInMonth =
+                new Date(
+                    year,
+                    month + 1,
+                    0
+                ).getDate();
+
+
+
+            /* =================================
+               EMPTY DAYS
+            ================================== */
+
+            for (
+                let i = 0;
+                i < firstDay;
+                i++
+            ) {
+
+                const emptyDay =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                emptyDay.className =
+                    "day empty-day";
+
+
+                calendarGrid.appendChild(
+                    emptyDay
+                );
+
+            }
+
+
+
+            /* =================================
+               ACTUAL DAYS
+            ================================== */
+
+            for (
+                let day = 1;
+                day <= daysInMonth;
+                day++
+            ) {
+
+
+                const dayElement =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                dayElement.className =
+                    "day";
+
+
+
+                /* Get information */
+
+                let data =
+                    calendarData[day];
+
+
+
+                /*
+                    If data doesn't exist,
+                    use default information.
+                */
+
+                if (!data) {
+
+                    data = {
+
+                        status: "On",
+
+                        headcount: "12/12",
+
+                        percentage: "100%"
+
+                    };
+
+                }
+
+
+
+                /* Choose status color */
+
+                const statusClass =
+                    data.status === "Late"
+                        ? "late"
+                        : "on";
+
+
+
+                /* Create day HTML */
+
+                dayElement.innerHTML = `
+
+                    <div class="day-top">
+
+                        <span
+                            class="status ${statusClass}"
+                        >
+                            ${data.status}
+                        </span>
+
+
+                        <span class="attendance">
+                            ${data.headcount}
+                        </span>
+
+                    </div>
+
+
+                    <div class="date-number">
+                        ${day}
+                    </div>
+
+
+                    <div class="percentage">
+                        ${data.percentage}
+                    </div>
+
+                `;
+
+
+
+                /* =================================
+                   DATE CLICK
+                ================================== */
+
+                dayElement.addEventListener(
+                    "click",
+                    function () {
+
+
+                        /* Remove previous selection */
+
+                        document
+                            .querySelectorAll(
+                                ".day"
+                            )
+                            .forEach(
+                                function(item) {
+
+                                    item.classList.remove(
+                                        "selected"
+                                    );
+
+                                }
+                            );
+
+
+
+                        /* Select clicked date */
+
+                        dayElement.classList.add(
+                            "selected"
+                        );
+
+
+
+                        /* Show details */
+
+                        showDetails(
+                            day,
+                            data
+                        );
+
+                    }
+                );
+
+
+
+                /* Add day */
+
+                calendarGrid.appendChild(
+                    dayElement
+                );
+
+            }
+
+        }
+
+
+
+        /* =================================
+           SHOW DATE DETAILS
+        ================================== */
+
+        function showDetails(
+            day,
+            data
+        ) {
+
+
+            detailsPanel.classList.add(
+                "show"
+            );
+
+
+            detailsTitle.textContent =
+                "Day " + day + " Details";
+
+
+            detailsStatus.textContent =
+                data.status;
+
+
+            detailsHeadcount.textContent =
+                data.headcount;
+
+
+            detailsPercentage.textContent =
+                data.percentage;
+
+        }
+
+
+
+        /* =================================
+           PREVIOUS MONTH
+        ================================== */
+
+        document
+            .getElementById(
+                "previousMonth"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+
+                    currentDate.setMonth(
+                        currentDate.getMonth() - 1
+                    );
+
+
+                    createCalendar();
+
+                }
+            );
+
+
+
+        /* =================================
+           NEXT MONTH
+        ================================== */
+
+        document
+            .getElementById(
+                "nextMonth"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+
+                    currentDate.setMonth(
+                        currentDate.getMonth() + 1
+                    );
+
+
+                    createCalendar();
+
+                }
+            );
+
+
+
+        /* =================================
+           THREE DOT MENU
+        ================================== */
+
+        const menuButton =
+            document.getElementById(
+                "menuButton"
+            );
+
+
+        const menuPopup =
+            document.getElementById(
+                "menuPopup"
+            );
+
+
+
+        menuButton.addEventListener(
+            "click",
+            function() {
+
+
+                menuPopup.classList.toggle(
+                    "show"
+                );
+
+            }
+        );
+
+
+
+        /* =================================
+           CLOSE MENU
+        ================================== */
+
+        document
+            .getElementById(
+                "closeMenu"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+
+                    menuPopup.classList.remove(
+                        "show"
+                    );
+
+                }
+            );
+
+
+
+        /* =================================
+           GO TO TODAY
+        ================================== */
+
+        document
+            .getElementById(
+                "todayButton"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+
+                    currentDate =
+                        new Date();
+
+
+                    createCalendar();
+
+
+                    menuPopup.classList.remove(
+                        "show"
+                    );
+
+                }
+            );
+
+
+
+        /* =================================
+           START CALENDAR
+        ================================== */
+
+        createCalendar();
+
+
+    </script>
+
+</body>
+
+</html>

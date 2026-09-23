@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Facility Force - Login</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #000;
+    overflow: hidden;
+}
+
+
+/* =========================================
+   MAIN PAGE
+========================================= */
+
+.login-screen {
+
+    width: min(100vw, 720px);
+
+    height: min(51.67vw, 372px);
+
+    min-height: 372px;
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+
+    background: #ffffff;
+}
+
+
+/* =========================================
+   LEFT - AUTHORITY
+========================================= */
+
+.authority {
+
+    width: 50%;
+    height: 100%;
+
+    background: linear-gradient(
+        135deg,
+        #146f9f 0%,
+        #075a89 100%
+    );
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    padding-top: 35px;
+}
+
+
+/* =========================================
+   RIGHT - DRIVER
+========================================= */
+
+.driver {
+
+    width: 50%;
+    height: 100%;
+
+    background: #ffffff;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    padding-top: 35px;
+}
+
+
+/* =========================================
+   CENTER LOGO
+========================================= */
+
+.logo {
+
+    position: absolute;
+
+    z-index: 20;
+
+    width: 185px;
+
+    height: 70px;
+
+    left: 50%;
+
+    top: 0;
+
+    transform: translateX(-50%);
+
+    object-fit: contain;
+}
+
+
+/* =========================================
+   IMAGES
+========================================= */
+
+.authority-img {
+
+    width: 155px;
+
+    height: 135px;
+
+    object-fit: contain;
+
+    margin-top: 18px;
+
+    margin-bottom: -2px;
+}
+
+
+.driver-img {
+
+    width: 180px;
+
+    height: 135px;
+
+    object-fit: contain;
+
+    margin-top: 18px;
+
+    margin-bottom: -2px;
+}
+
+
+/* =========================================
+   TITLES
+========================================= */
+
+.title {
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    margin-top: -1px;
+
+    margin-bottom: 12px;
+
+    letter-spacing: 0.2px;
+}
+
+
+.authority .title {
+
+    color: #ffffff;
+}
+
+
+.driver .title {
+
+    color: #075b8c;
+}
+
+
+/* =========================================
+   GET STARTED BUTTON
+========================================= */
+
+.start-btn {
+
+    border: none;
+
+    height: 27px;
+
+    min-width: 91px;
+
+    padding: 0 14px;
+
+    border-radius: 20px;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.authority-btn {
+
+    background: #ffffff;
+
+    color: #126b99;
+}
+
+
+.driver-btn {
+
+    background: #075f8f;
+
+    color: #ffffff;
+}
+
+
+.start-btn:hover {
+
+    transform: scale(1.05);
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.18);
+}
+
+
+.start-btn:active {
+
+    transform: scale(0.96);
+}
+
+
+/* =========================================
+   LOGIN POPUP
+========================================= */
+
+.login-overlay {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    background: rgba(0,0,0,0.58);
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+/* =========================================
+   LOGIN CARD
+========================================= */
+
+.login-card {
+
+    width: min(90%, 360px);
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 28px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.3);
+}
+
+
+.login-card h2 {
+
+    color: #075f8f;
+
+    text-align: center;
+
+    margin-bottom: 6px;
+}
+
+
+.role-text {
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 13px;
+
+    margin-bottom: 22px;
+}
+
+
+/* =========================================
+   INPUT FIELDS
+========================================= */
+
+.field {
+
+    margin-bottom: 14px;
+}
+
+
+.field label {
+
+    display: block;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    margin-bottom: 6px;
+
+    color: #333;
+}
+
+
+.field input {
+
+    width: 100%;
+
+    height: 42px;
+
+    border: 1px solid #d5dfe7;
+
+    border-radius: 8px;
+
+    padding: 0 12px;
+
+    outline: none;
+
+    font-size: 13px;
+}
+
+
+.field input:focus {
+
+    border-color: #086397;
+
+    box-shadow:
+        0 0 0 3px rgba(8,99,151,0.1);
+}
+
+
+/* =========================================
+   LOGIN BUTTON
+========================================= */
+
+.login-submit {
+
+    width: 100%;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #086397;
+
+    color: #ffffff;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.login-submit:hover {
+
+    background: #064f79;
+}
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+.forgot {
+
+    display: block;
+
+    text-align: center;
+
+    margin-top: 13px;
+
+    color: #086397;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================
+   BACK BUTTON
+========================================= */
+
+.close-btn {
+
+    display: block;
+
+    margin: 17px auto 0;
+
+    border: none;
+
+    background: none;
+
+    color: #555;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.message {
+
+    text-align: center;
+
+    font-size: 12px;
+
+    margin-top: 10px;
+
+    min-height: 15px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .login-screen {
+
+        width: 100vw;
+
+        height: 51.67vw;
+
+        min-height: 0;
+    }
+
+    .logo {
+
+        width: 26vw;
+
+        height: auto;
+    }
+
+    .authority-img {
+
+        width: 21.5vw;
+
+        height: 18.75vw;
+    }
+
+    .driver-img {
+
+        width: 25vw;
+
+        height: 18.75vw;
+    }
+
+    .title {
+
+        font-size: 1.7vw;
+
+        margin-bottom: 1.7vw;
+    }
+
+    .start-btn {
+
+        height: 3.75vw;
+
+        min-width: 12.6vw;
+
+        font-size: 1.1vw;
+    }
+
+    .authority,
+    .driver {
+
+        padding-top: 4vw;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     MAIN PAGE
+====================================================== -->
+
+<div class="login-screen">
+
+
+    <!-- CENTER LOGO -->
+
+    <img
+        src="data:image/webp;base64,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"
+        class="logo"
+        alt="RadianE Facility Force"
+    >
+
+
+    <!-- ================================================
+         LEFT SIDE - AUTHORITY LOGIN
+    ================================================= -->
+
+    <div class="authority">
+
+        <img
+            src="data:image/webp;base64,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"
+            class="authority-img"
+            alt="Authority Login"
+        >
+
+        <div class="title">
+            AUTHORITY LOGIN
+        </div>
+
+        <button
+            class="start-btn authority-btn"
+            onclick="openLogin('Authority')">
+
+            GET STARTED
+
+        </button>
+
+    </div>
+
+
+    <!-- ================================================
+         RIGHT SIDE - DRIVER LOGIN
+    ================================================= -->
+
+    <div class="driver">
+
+        <img
+            src="data:image/webp;base64,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"
+            class="driver-img"
+            alt="Driver Login"
+        >
+
+        <div class="title">
+            DRIVER LOGIN
+        </div>
+
+        <button
+            class="start-btn driver-btn"
+            onclick="openLogin('Driver')">
+
+            GET STARTED
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     INTERACTIVE LOGIN POPUP
+====================================================== -->
+
+<div
+    class="login-overlay"
+    id="loginOverlay"
+>
+
+    <div class="login-card">
+
+        <h2 id="loginHeading">
+            Authority Login
+        </h2>
+
+        <div
+            class="role-text"
+            id="roleText"
+        >
+            Enter your login details
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+            >
+
+        </div>
+
+
+        <button
+            class="login-submit"
+            onclick="loginUser()"
+        >
+            LOGIN
+        </button>
+
+
+        <div
+            class="forgot"
+            onclick="forgotPassword()"
+        >
+            Forgot Password?
+        </div>
+
+
+        <div
+            class="message"
+            id="message"
+        ></div>
+
+
+        <button
+            class="close-btn"
+            onclick="closeLogin()"
+        >
+            ← Back
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================
+   CURRENT LOGIN ROLE
+========================================= */
+
+let selectedRole = "";
+
+
+/* =========================================
+   OPEN LOGIN
+========================================= */
+
+function openLogin(role) {
+
+    selectedRole = role;
+
+    document.getElementById(
+        "loginOverlay"
+    ).style.display = "flex";
+
+
+    document.getElementById(
+        "loginHeading"
+    ).textContent =
+        role + " Login";
+
+
+    document.getElementById(
+        "roleText"
+    ).textContent =
+        "Enter your " +
+        role.toLowerCase() +
+        " login details";
+
+
+    document.getElementById(
+        "username"
+    ).value = "";
+
+
+    document.getElementById(
+        "password"
+    ).value = "";
+
+
+    document.getElementById(
+        "message"
+    ).textContent = "";
+
+}
+
+
+/* =========================================
+   CLOSE LOGIN
+========================================= */
+
+function closeLogin() {
+
+    document.getElementById(
+        "loginOverlay"
+    ).style.display = "none";
+
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+function loginUser() {
+
+    const username =
+        document.getElementById(
+            "username"
+        ).value.trim();
+
+
+    const password =
+        document.getElementById(
+            "password"
+        ).value.trim();
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    if (!username || !password) {
+
+        message.style.color =
+            "#d62828";
+
+        message.textContent =
+            "Please enter username and password.";
+
+        return;
+    }
+
+
+    message.style.color =
+        "#16803c";
+
+
+    message.textContent =
+        selectedRole +
+        " login successful!";
+
+}
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+function forgotPassword() {
+
+    alert(
+        "Password recovery will be connected to the backend."
+    );
+
+}
+
+</script>
+
+</body>
+</html>

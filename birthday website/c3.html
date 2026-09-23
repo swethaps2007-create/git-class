@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Route Calendar</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #cfe3fa;
+            min-height: 100vh;
+        }
+
+
+        /* =================================
+           MAIN WHITE CONTAINER
+        ================================= */
+
+        .container {
+            width: 84%;
+            max-width: 1350px;
+            margin: 0 auto;
+            min-height: 100vh;
+
+            background: white;
+
+            border-radius: 0 0 10px 10px;
+
+            padding: 25px 35px 35px;
+
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+
+
+        /* =================================
+           HEADER
+        ================================= */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 38px;
+        }
+
+        .route-title {
+            margin: 0;
+
+            color: #14518a;
+
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+
+        /* =================================
+           THREE DOT MENU
+        ================================= */
+
+        .menu-container {
+            position: relative;
+        }
+
+        .menu-button {
+            border: none;
+            background: transparent;
+
+            color: #14518a;
+
+            font-size: 25px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            padding: 5px 10px;
+        }
+
+        .menu {
+            display: none;
+
+            position: absolute;
+
+            right: 0;
+            top: 35px;
+
+            width: 160px;
+
+            background: white;
+
+            border-radius: 8px;
+
+            box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+
+            overflow: hidden;
+
+            z-index: 100;
+        }
+
+        .menu button {
+            width: 100%;
+
+            border: none;
+
+            background: white;
+
+            padding: 12px;
+
+            text-align: left;
+
+            font-size: 14px;
+
+            cursor: pointer;
+        }
+
+        .menu button:hover {
+            background: #eef5fb;
+        }
+
+
+        /* =================================
+           MONTH NAVIGATION
+        ================================= */
+
+        .month-navigation {
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            gap: 35px;
+
+            margin-bottom: 32px;
+        }
+
+        .month-title {
+            min-width: 235px;
+
+            text-align: center;
+
+            color: #14518a;
+
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .nav-button {
+            width: 52px;
+            height: 52px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: #e6f0fc;
+
+            color: #14518a;
+
+            font-size: 30px;
+
+            cursor: pointer;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            transition: 0.2s;
+        }
+
+        .nav-button:hover {
+            background: #d5e6f9;
+        }
+
+
+        /* =================================
+           CALENDAR
+        ================================= */
+
+        .calendar-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+        .calendar {
+            min-width: 850px;
+
+            display: grid;
+
+            grid-template-columns: repeat(7, 1fr);
+
+            gap: 10px;
+        }
+
+
+        /* =================================
+           WEEKDAY
+        ================================= */
+
+        .weekday {
+            text-align: center;
+
+            padding: 5px 0 10px;
+
+            color: #666;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+        .weekday.sunday {
+            color: #d51f3c;
+        }
+
+
+        /* =================================
+           EMPTY SPACE
+        ================================= */
+
+        .empty {
+            height: 140px;
+        }
+
+
+        /* =================================
+           DATE BOX
+        ================================= */
+
+        .date-box {
+            height: 140px;
+
+            border: 1px solid #d3dfeb;
+
+            border-radius: 11px;
+
+            background: white;
+
+            padding: 12px;
+
+            cursor: pointer;
+
+            display: flex;
+            flex-direction: column;
+
+            transition: 0.2s;
+        }
+
+        .date-box:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 5px 15px rgba(20, 81, 138, 0.12);
+        }
+
+
+        /* =================================
+           SUNDAY BOX
+        ================================= */
+
+        .date-box.sunday {
+            background: #fff0f3;
+
+            border-color: #f0bdca;
+        }
+
+
+        /* =================================
+           TOP ROW
+        ================================= */
+
+        .top-row {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        /* =================================
+           STATUS
+        ================================= */
+
+        .status {
+            font-size: 17px;
+
+            font-weight: 700;
+        }
+
+        .on-time {
+            color: #009447;
+        }
+
+        .late {
+            color: #d71920;
+        }
+
+
+        /* =================================
+           HEADCOUNT
+        ================================= */
+
+        .headcount {
+            color: #777;
+
+            font-size: 15px;
+
+            font-weight: 500;
+        }
+
+
+        /* =================================
+           DATE NUMBER
+        ================================= */
+
+        .date-number {
+            flex: 1;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            color: #000;
+
+            font-size: 29px;
+
+            font-weight: 800;
+        }
+
+        .sunday .date-number {
+            color: #d51f3c;
+
+            font-size: 29px;
+
+            font-weight: 800;
+        }
+
+
+        /* =================================
+           PERCENTAGE
+        ================================= */
+
+        .percentage {
+            font-size: 16px;
+
+            color: #555;
+
+            font-weight: 500;
+        }
+
+
+        /* =================================
+           ANALYSIS + REPORT BUTTONS
+        ================================= */
+
+        .action-buttons {
+            display: flex;
+
+            gap: 15px;
+
+            margin-top: 22px;
+
+            margin-bottom: 25px;
+        }
+
+        .action-button {
+            flex: 1;
+
+            height: 54px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #14518a;
+
+            color: white;
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .action-button:hover {
+            background: #0d3f6b;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =================================
+           DETAILS BOX
+        ================================= */
+
+        .details-box {
+            display: none;
+
+            background: #f4f8fc;
+
+            border-left: 5px solid #14518a;
+
+            border-radius: 10px;
+
+            padding: 20px 22px;
+
+            margin-top: 5px;
+
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .details-box.show {
+            display: block;
+        }
+
+        .details-title {
+            margin: 0 0 15px;
+
+            color: #14518a;
+
+            font-size: 21px;
+
+            font-weight: 800;
+        }
+
+        .details-row {
+            margin: 9px 0;
+
+            color: #333;
+
+            font-size: 16px;
+        }
+
+        .details-row strong {
+            color: #14518a;
+        }
+
+
+        /* =================================
+           MOBILE
+        ================================= */
+
+        @media (max-width: 800px) {
+
+            .container {
+                width: 94%;
+
+                padding: 20px;
+            }
+
+            .route-title {
+                font-size: 23px;
+            }
+
+            .month-title {
+                font-size: 22px;
+            }
+
+            .month-navigation {
+                gap: 15px;
+            }
+
+            .calendar {
+                min-width: 850px;
+            }
+
+            .action-button {
+                font-size: 16px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =================================
+         HEADER
+    ================================= -->
+
+    <div class="header">
+
+        <h1 class="route-title">
+            Route-1: Pondicherry to office
+        </h1>
+
+
+        <div class="menu-container">
+
+            <button
+                class="menu-button"
+                onclick="toggleMenu()">
+
+                ⋯
+
+            </button>
+
+
+            <div
+                class="menu"
+                id="menu">
+
+                <button onclick="goToToday()">
+                    Go to today
+                </button>
+
+                <button onclick="closeMenu()">
+                    Close menu
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================
+         MONTH NAVIGATION
+    ================================= -->
+
+    <div class="month-navigation">
+
+        <button
+            class="nav-button"
+            onclick="previousMonth()">
+
+            ‹
+
+        </button>
+
+
+        <div
+            class="month-title"
+            id="monthTitle">
+
+        </div>
+
+
+        <button
+            class="nav-button"
+            onclick="nextMonth()">
+
+            ›
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================
+         CALENDAR
+    ================================= -->
+
+    <div class="calendar-wrapper">
+
+        <div
+            class="calendar"
+            id="calendar">
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================
+         ANALYSIS + REPORT
+    ================================= -->
+
+    <div class="action-buttons">
+
+        <button
+            class="action-button"
+            id="analysisButton">
+
+            Analysis
+
+        </button>
+
+
+        <button
+            class="action-button"
+            id="reportButton">
+
+            Report
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================
+         DETAILS BOX
+    ================================= -->
+
+    <div
+        class="details-box"
+        id="detailsBox">
+
+
+        <h2
+            class="details-title"
+            id="detailsTitle">
+
+            Day Details
+
+        </h2>
+
+
+        <div class="details-row">
+
+            <strong>Status:</strong>
+
+            <span id="detailsStatus">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="details-row">
+
+            <strong>Headcount:</strong>
+
+            <span id="detailsHeadcount">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="details-row">
+
+            <strong>Utilization:</strong>
+
+            <span id="detailsPercentage">
+                -
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+    /* =================================
+       CALENDAR DATA
+    ================================= */
+
+    const calendarData = {
+
+        1:  {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        2:  {
+            status: "On Time",
+            headcount: "11/12",
+            percentage: "92%"
+        },
+
+        3:  {
+            status: "On Time",
+            headcount: "10/12",
+            percentage: "83%"
+        },
+
+        4:  {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        5:  {
+            status: "On Time",
+            headcount: "9/12",
+            percentage: "75%"
+        },
+
+        6:  {
+            status: "Late",
+            headcount: "8/12",
+            percentage: "67%"
+        },
+
+        7:  {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        8:  {
+            status: "On Time",
+            headcount: "11/12",
+            percentage: "92%"
+        },
+
+        9:  {
+            status: "Late",
+            headcount: "7/12",
+            percentage: "58%"
+        },
+
+        10: {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        11: {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        12: {
+            status: "On Time",
+            headcount: "10/12",
+            percentage: "83%"
+        },
+
+        13: {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        14: {
+            status: "On Time",
+            headcount: "9/12",
+            percentage: "75%"
+        },
+
+        15: {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        16: {
+            status: "Late",
+            headcount: "8/12",
+            percentage: "67%"
+        },
+
+        17: {
+            status: "On Time",
+            headcount: "11/12",
+            percentage: "92%"
+        },
+
+        18: {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        19: {
+            status: "On Time",
+            headcount: "10/12",
+            percentage: "83%"
+        },
+
+        20: {
+            status: "Late",
+            headcount: "7/12",
+            percentage: "58%"
+        },
+
+        21: {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        22: {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        23: {
+            status: "On Time",
+            headcount: "9/12",
+            percentage: "75%"
+        },
+
+        24: {
+            status: "On Time",
+            headcount: "11/12",
+            percentage: "92%"
+        },
+
+        25: {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        26: {
+            status: "Late",
+            headcount: "8/12",
+            percentage: "67%"
+        },
+
+        27: {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        28: {
+            status: "On Time",
+            headcount: "10/12",
+            percentage: "83%"
+        },
+
+        29: {
+            status: "On Time",
+            headcount: "12/12",
+            percentage: "100%"
+        },
+
+        30: {
+            status: "On Time",
+            headcount: "11/12",
+            percentage: "92%"
+        }
+
+    };
+
+
+
+    /* =================================
+       STARTING MONTH
+    ================================= */
+
+    let currentDate =
+        new Date(2026, 8, 1);
+
+
+
+    /* =================================
+       GENERATE CALENDAR
+    ================================= */
+
+    function generateCalendar() {
+
+        const calendar =
+            document.getElementById("calendar");
+
+        calendar.innerHTML = "";
+
+
+        const year =
+            currentDate.getFullYear();
+
+        const month =
+            currentDate.getMonth();
+
+
+
+        /* MONTH TITLE */
+
+        document.getElementById(
+            "monthTitle"
+        ).textContent =
+            currentDate.toLocaleString(
+                "default",
+                {
+                    month: "long",
+                    year: "numeric"
+                }
+            );
+
+
+
+        /* =================================
+           WEEK DAYS
+        ================================= */
+
+        const weekdays = [
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun"
+        ];
+
+
+        weekdays.forEach(
+            (day, index) => {
+
+                const weekday =
+                    document.createElement("div");
+
+                weekday.className =
+                    "weekday";
+
+                weekday.textContent =
+                    day;
+
+
+                if (index === 6) {
+
+                    weekday.classList.add(
+                        "sunday"
+                    );
+
+                }
+
+
+                calendar.appendChild(
+                    weekday
+                );
+
+            }
+        );
+
+
+
+        /* =================================
+           FIRST DAY
+        ================================= */
+
+        let firstDay =
+            new Date(
+                year,
+                month,
+                1
+            ).getDay();
+
+
+        /*
+            Convert JavaScript's
+            Sunday-first numbering
+            into Monday-first.
+        */
+
+        firstDay =
+            firstDay === 0
+                ? 6
+                : firstDay - 1;
+
+
+
+        /* =================================
+           NUMBER OF DAYS
+        ================================= */
+
+        const numberOfDays =
+            new Date(
+                year,
+                month + 1,
+                0
+            ).getDate();
+
+
+
+        /* =================================
+           EMPTY BOXES
+        ================================= */
+
+        for (
+            let i = 0;
+            i < firstDay;
+            i++
+        ) {
+
+            const empty =
+                document.createElement("div");
+
+            empty.className =
+                "empty";
+
+            calendar.appendChild(
+                empty
+            );
+
+        }
+
+
+
+        /* =================================
+           DATE BOXES
+        ================================= */
+
+        for (
+            let day = 1;
+            day <= numberOfDays;
+            day++
+        ) {
+
+            const dateBox =
+                document.createElement("div");
+
+            dateBox.className =
+                "date-box";
+
+
+            const date =
+                new Date(
+                    year,
+                    month,
+                    day
+                );
+
+
+            /* SUNDAY */
+
+            if (
+                date.getDay() === 0
+            ) {
+
+                dateBox.classList.add(
+                    "sunday"
+                );
+
+            }
+
+
+            /* DATA */
+
+            const data =
+                calendarData[day] || {
+
+                    status: "Pending",
+                    headcount: "-",
+                    percentage: "-"
+
+                };
+
+
+
+            /* =================================
+               TOP ROW
+            ================================= */
+
+            const topRow =
+                document.createElement("div");
+
+            topRow.className =
+                "top-row";
+
+
+
+            /* STATUS */
+
+            const status =
+                document.createElement("div");
+
+            status.className =
+                "status";
+
+
+            status.textContent =
+                data.status;
+
+
+            if (
+                data.status === "On Time"
+            ) {
+
+                status.classList.add(
+                    "on-time"
+                );
+
+            }
+
+
+            if (
+                data.status === "Late"
+            ) {
+
+                status.classList.add(
+                    "late"
+                );
+
+            }
+
+
+
+            /* HEADCOUNT */
+
+            const headcount =
+                document.createElement("div");
+
+            headcount.className =
+                "headcount";
+
+            headcount.textContent =
+                data.headcount;
+
+
+
+            topRow.appendChild(
+                status
+            );
+
+            topRow.appendChild(
+                headcount
+            );
+
+
+
+            /* =================================
+               DATE
+            ================================= */
+
+            const dateNumber =
+                document.createElement("div");
+
+            dateNumber.className =
+                "date-number";
+
+            dateNumber.textContent =
+                day;
+
+
+
+            /* =================================
+               PERCENTAGE
+            ================================= */
+
+            const percentage =
+                document.createElement("div");
+
+            percentage.className =
+                "percentage";
+
+            percentage.textContent =
+                data.percentage;
+
+
+
+            /* =================================
+               ADD CONTENT
+            ================================= */
+
+            dateBox.appendChild(
+                topRow
+            );
+
+            dateBox.appendChild(
+                dateNumber
+            );
+
+            dateBox.appendChild(
+                percentage
+            );
+
+
+
+            /* =================================
+               DATE CLICK
+            ================================= */
+
+            dateBox.addEventListener(
+                "click",
+                function () {
+
+                    showDetails(
+                        day,
+                        data
+                    );
+
+                }
+            );
+
+
+            calendar.appendChild(
+                dateBox
+            );
+
+        }
+
+    }
+
+
+
+    /* =================================
+       SHOW DETAILS
+    ================================= */
+
+    function showDetails(
+        day,
+        data
+    ) {
+
+        const detailsBox =
+            document.getElementById(
+                "detailsBox"
+            );
+
+
+        detailsBox.classList.add(
+            "show"
+        );
+
+
+        document.getElementById(
+            "detailsTitle"
+        ).textContent =
+            "Day " + day + " Details";
+
+
+        document.getElementById(
+            "detailsStatus"
+        ).textContent =
+            data.status;
+
+
+        document.getElementById(
+            "detailsHeadcount"
+        ).textContent =
+            data.headcount;
+
+
+        document.getElementById(
+            "detailsPercentage"
+        ).textContent =
+            data.percentage;
+
+
+        /*
+            Smoothly scroll to
+            the details box.
+        */
+
+        detailsBox.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+        });
+
+    }
+
+
+
+    /* =================================
+       PREVIOUS MONTH
+    ================================= */
+
+    function previousMonth() {
+
+        currentDate.setMonth(
+            currentDate.getMonth() - 1
+        );
+
+        generateCalendar();
+
+    }
+
+
+
+    /* =================================
+       NEXT MONTH
+    ================================= */
+
+    function nextMonth() {
+
+        currentDate.setMonth(
+            currentDate.getMonth() + 1
+        );
+
+        generateCalendar();
+
+    }
+
+
+
+    /* =================================
+       MENU
+    ================================= */
+
+    function toggleMenu() {
+
+        const menu =
+            document.getElementById(
+                "menu"
+            );
+
+
+        if (
+            menu.style.display === "block"
+        ) {
+
+            menu.style.display =
+                "none";
+
+        }
+
+        else {
+
+            menu.style.display =
+                "block";
+
+        }
+
+    }
+
+
+
+    function closeMenu() {
+
+        document.getElementById(
+            "menu"
+        ).style.display =
+            "none";
+
+    }
+
+
+
+    /* =================================
+       GO TO TODAY
+    ================================= */
+
+    function goToToday() {
+
+        currentDate =
+            new Date();
+
+        generateCalendar();
+
+        closeMenu();
+
+    }
+
+
+
+    /* =================================
+       ANALYSIS BUTTON
+    ================================= */
+
+    document.getElementById(
+        "analysisButton"
+    ).addEventListener(
+        "click",
+        function () {
+
+            alert(
+                "Analysis page will open here."
+            );
+
+        }
+    );
+
+
+
+    /* =================================
+       REPORT BUTTON
+    ================================= */
+
+    document.getElementById(
+        "reportButton"
+    ).addEventListener(
+        "click",
+        function () {
+
+            alert(
+                "Report page will open here."
+            );
+
+        }
+    );
+
+
+
+    /* =================================
+       START
+    ================================= */
+
+    generateCalendar();
+
+</script>
+
+
+</body>
+
+</html>

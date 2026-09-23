@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>RFMS Fleet - Driver Dashboard</title>
+
+<style>
+
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef1fa;
+    color: #17233c;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+}
+
+
+/* =========================
+   MAIN APP
+========================= */
+
+.app {
+    width: 540px;
+    min-height: 100vh;
+
+    background: #eef1fa;
+
+    padding: 20px 18px 100px;
+}
+
+
+/* =========================
+   ASSIGNED ROUTE CARD
+========================= */
+
+.route-card {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 20px 22px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+
+/* Heading */
+
+.section-title {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    color: #17233c;
+
+    margin-bottom: 5px;
+}
+
+
+/* Subtitle */
+
+.section-subtitle {
+
+    color: #657089;
+
+    font-size: 15px;
+
+    margin-bottom: 18px;
+}
+
+
+/* =========================
+   FROM / TO
+========================= */
+
+.route-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+/* Location box */
+
+.location {
+
+    flex: 1;
+
+    padding: 14px 15px;
+
+    border-radius: 15px;
+
+    min-width: 0;
+}
+
+
+/* FROM */
+
+.from {
+
+    background: #e4f8ef;
+}
+
+
+/* TO */
+
+.to {
+
+    background: #fde8ed;
+}
+
+
+/* FROM / TO label */
+
+.location-label {
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    margin-bottom: 7px;
+}
+
+
+.from .location-label {
+
+    color: #07966b;
+}
+
+
+.to .location-label {
+
+    color: #e52e58;
+}
+
+
+/* Location name */
+
+.location-name {
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    color: #162038;
+
+    line-height: 1.3;
+}
+
+
+/* =========================
+   DRIVER + VEHICLE
+   OUTSIDE GREEN BOX
+========================= */
+
+.driver-info {
+
+    margin-top: 13px;
+
+    padding-left: 3px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+    font-size: 14px;
+
+    color: #59657b;
+
+    line-height: 1.5;
+}
+
+
+.driver-info strong {
+
+    color: #17233c;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   ARROW
+========================= */
+
+.route-arrow {
+
+    width: 38px;
+
+    min-width: 38px;
+
+    height: 38px;
+
+    background: #eef1fb;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #4d45e8;
+
+    font-size: 20px;
+}
+
+
+/* =========================
+   DATE + STATUS
+========================= */
+
+.route-bottom {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-top: 16px;
+}
+
+
+/* Date */
+
+.date {
+
+    font-size: 15px;
+
+    color: #34415a;
+}
+
+
+/* Running */
+
+.status {
+
+    background: #dff8ed;
+
+    color: #07966b;
+
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+/* Green dot */
+
+.status-dot {
+
+    width: 8px;
+
+    height: 8px;
+
+    background: #0ba875;
+
+    border-radius: 50%;
+}
+
+
+/* =========================
+   TIMER CARD
+========================= */
+
+.timer-card {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 22px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+
+.timer-title {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    color: #17233c;
+
+    margin-bottom: 5px;
+}
+
+
+/* Timer display */
+
+.timer-box {
+
+    background: #edf0ff;
+
+    border-radius: 17px;
+
+    text-align: center;
+
+    padding: 32px 10px 20px;
+
+    margin-top: 5px;
+}
+
+
+.timer {
+
+    font-size: 42px;
+
+    font-weight: bold;
+
+    color: #5145e5;
+
+    letter-spacing: 1px;
+}
+
+
+.timer-message {
+
+    margin-top: 8px;
+
+    color: #59657b;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   TIMER BUTTONS
+========================= */
+
+.timer-buttons {
+
+    display: flex;
+
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+
+.timer-btn {
+
+    flex: 1;
+
+    border: none;
+
+    border-radius: 15px;
+
+    padding: 17px 10px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.start-btn {
+
+    background: #19b957;
+}
+
+
+.start-btn:hover {
+
+    background: #149e49;
+}
+
+
+.end-btn {
+
+    background: #f7a5aa;
+}
+
+
+.end-btn:hover {
+
+    background: #ed8e95;
+}
+
+
+.timer-btn:disabled {
+
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================
+   INTERMEDIATE STOPS
+========================= */
+
+.stops-card {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 22px;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+
+.stops-heading {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 16px;
+}
+
+
+.stops-title {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    color: #17233c;
+}
+
+
+.managed {
+
+    background: #edf0f7;
+
+    color: #63708a;
+
+    padding: 7px 12px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   STOP
+========================= */
+
+.stop {
+
+    border: 1px solid #e1e5ed;
+
+    border-radius: 17px;
+
+    padding: 15px;
+
+    margin-bottom: 15px;
+
+    background: white;
+}
+
+
+.stop:last-child {
+
+    margin-bottom: 0;
+}
+
+
+.stop-top {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+}
+
+
+.stop-number {
+
+    width: 34px;
+
+    height: 34px;
+
+    min-width: 34px;
+
+    border-radius: 50%;
+
+    background: #e9ecff;
+
+    color: #5145e5;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+
+.stop-details {
+
+    flex: 1;
+}
+
+
+.stop-name {
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    color: #182239;
+}
+
+
+.arrival {
+
+    margin-top: 5px;
+
+    color: #68748a;
+
+    font-size: 13px;
+}
+
+
+.pending {
+
+    background: #edf1f7;
+
+    color: #66738b;
+
+    padding: 6px 11px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+
+.updated {
+
+    background: #dff8ed;
+
+    color: #07966b;
+}
+
+
+/* =========================
+   HEADCOUNT
+========================= */
+
+.headcount-row {
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 15px;
+}
+
+
+.headcount-input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 13px 15px;
+
+    border: 1px solid #dce1ea;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+.headcount-input:focus {
+
+    border-color: #5145e5;
+}
+
+
+.update-btn {
+
+    width: 110px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #5145e5;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.update-btn:hover {
+
+    background: #4035d2;
+}
+
+
+/* =========================
+   BOTTOM NAVIGATION
+========================= */
+
+.bottom-nav {
+
+    position: fixed;
+
+    bottom: 0;
+
+    width: 540px;
+
+    height: 82px;
+
+    background: white;
+
+    border-top: 1px solid #e2e5eb;
+
+    display: flex;
+
+    justify-content: space-around;
+
+    align-items: center;
+
+    z-index: 20;
+}
+
+
+.nav-item {
+
+    text-align: center;
+
+    color: #8992a5;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    min-width: 80px;
+
+    transition: 0.2s;
+}
+
+
+.nav-icon {
+
+    font-size: 22px;
+
+    margin-bottom: 6px;
+}
+
+
+.nav-item.active {
+
+    color: #5145e5;
+
+    font-weight: bold;
+}
+
+
+.nav-item:hover {
+
+    color: #5145e5;
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+.toast {
+
+    position: fixed;
+
+    bottom: 100px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    background: #222;
+
+    color: white;
+
+    padding: 12px 20px;
+
+    border-radius: 9px;
+
+    display: none;
+
+    z-index: 100;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 540px) {
+
+    .app {
+
+        width: 100%;
+
+        padding-left: 14px;
+
+        padding-right: 14px;
+    }
+
+
+    .bottom-nav {
+
+        width: 100%;
+    }
+
+
+    .route-row {
+
+        gap: 8px;
+    }
+
+
+    .location {
+
+        padding: 12px;
+    }
+
+
+    .location-name {
+
+        font-size: 15px;
+    }
+
+
+    .driver-info {
+
+        font-size: 13px;
+    }
+
+
+    .timer {
+
+        font-size: 38px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<!-- =====================================
+     ASSIGNED ROUTE
+===================================== -->
+
+<div class="route-card">
+
+
+    <div class="section-title">
+
+        📍 &nbsp;Assigned Route
+
+    </div>
+
+
+    <div class="section-subtitle">
+
+        Route assigned by authority
+
+    </div>
+
+
+    <!-- FROM + TO BOXES -->
+
+    <div class="route-row">
+
+
+        <!-- FROM -->
+
+        <div class="location from">
+
+            <div class="location-label">
+
+                FROM
+
+            </div>
+
+
+            <div class="location-name">
+
+                Pondicherry
+
+            </div>
+
+        </div>
+
+
+        <!-- ARROW -->
+
+        <div class="route-arrow">
+
+            →
+
+        </div>
+
+
+        <!-- TO -->
+
+        <div class="location to">
+
+            <div class="location-label">
+
+                TO
+
+            </div>
+
+
+            <div class="location-name">
+
+                HCL Technologies
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================
+         DRIVER + VEHICLE
+         OUTSIDE GREEN BOX
+    ================================== -->
+
+    <div class="driver-info">
+
+        <div>
+
+            <strong>Driver:</strong>
+            Arun Kumar
+
+        </div>
+
+
+        <div>
+
+            <strong>Vehicle:</strong>
+            TN 32 AB 1234
+
+        </div>
+
+    </div>
+
+
+    <!-- DATE + STATUS -->
+
+    <div class="route-bottom">
+
+
+        <div class="date">
+
+            📅 &nbsp;20 Sept 2026
+
+        </div>
+
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            RUNNING
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================
+     TRIP TIMER
+===================================== -->
+
+<div class="timer-card">
+
+
+    <div class="timer-title">
+
+        ⏱️ &nbsp;Trip Timer
+
+    </div>
+
+
+    <div class="timer-box">
+
+
+        <div
+            class="timer"
+            id="timer"
+        >
+
+            00:00:00
+
+        </div>
+
+
+        <div
+            class="timer-message"
+            id="timerMessage"
+        >
+
+            Trip not started
+
+        </div>
+
+
+    </div>
+
+
+    <div class="timer-buttons">
+
+
+        <button
+            class="timer-btn start-btn"
+            id="startButton"
+            onclick="startTrip()"
+        >
+
+            ▶ START TRIP
+
+        </button>
+
+
+        <button
+            class="timer-btn end-btn"
+            id="endButton"
+            onclick="endTrip()"
+            disabled
+        >
+
+            ■ END TRIP
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================
+     INTERMEDIATE STOPS
+===================================== -->
+
+<div class="stops-card">
+
+
+    <div class="stops-heading">
+
+
+        <div class="stops-title">
+
+            📍 &nbsp;Intermediate Stops
+
+        </div>
+
+
+        <div class="managed">
+
+            Authority Managed
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- STOP 1 -->
+
+    <div class="stop">
+
+
+        <div class="stop-top">
+
+
+            <div class="stop-number">
+
+                1
+
+            </div>
+
+
+            <div class="stop-details">
+
+
+                <div class="stop-name">
+
+                    Villupuram
+
+                </div>
+
+
+                <div class="arrival">
+
+                    Expected arrival: 08:15 AM
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                class="pending"
+                id="status1"
+            >
+
+                Pending
+
+            </div>
+
+
+        </div>
+
+
+        <div class="headcount-row">
+
+
+            <input
+                type="number"
+                class="headcount-input"
+                id="count1"
+                placeholder="Enter headcount"
+                min="0"
+            >
+
+
+            <button
+                class="update-btn"
+                onclick="updateCount(1)"
+            >
+
+                UPDATE
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- STOP 2 -->
+
+    <div class="stop">
+
+
+        <div class="stop-top">
+
+
+            <div class="stop-number">
+
+                2
+
+            </div>
+
+
+            <div class="stop-details">
+
+
+                <div class="stop-name">
+
+                    Tindivanam
+
+                </div>
+
+
+                <div class="arrival">
+
+                    Expected arrival: 08:50 AM
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                class="pending"
+                id="status2"
+            >
+
+                Pending
+
+            </div>
+
+
+        </div>
+
+
+        <div class="headcount-row">
+
+
+            <input
+                type="number"
+                class="headcount-input"
+                id="count2"
+                placeholder="Enter headcount"
+                min="0"
+            >
+
+
+            <button
+                class="update-btn"
+                onclick="updateCount(2)"
+            >
+
+                UPDATE
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- STOP 3 -->
+
+    <div class="stop">
+
+
+        <div class="stop-top">
+
+
+            <div class="stop-number">
+
+                3
+
+            </div>
+
+
+            <div class="stop-details">
+
+
+                <div class="stop-name">
+
+                    Madurantakam
+
+                </div>
+
+
+                <div class="arrival">
+
+                    Expected arrival: 09:20 AM
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                class="pending"
+                id="status3"
+            >
+
+                Pending
+
+            </div>
+
+
+        </div>
+
+
+        <div class="headcount-row">
+
+
+            <input
+                type="number"
+                class="headcount-input"
+                id="count3"
+                placeholder="Enter headcount"
+                min="0"
+            >
+
+
+            <button
+                class="update-btn"
+                onclick="updateCount(3)"
+            >
+
+                UPDATE
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================
+     BOTTOM NAVIGATION
+===================================== -->
+
+<div class="bottom-nav">
+
+
+    <div
+        class="nav-item active"
+        onclick="selectNavigation(this, 'Dashboard')"
+    >
+
+        <div class="nav-icon">
+
+            🏠
+
+        </div>
+
+        Dashboard
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        onclick="selectNavigation(this, 'History')"
+    >
+
+        <div class="nav-icon">
+
+            ⏱️
+
+        </div>
+
+        History
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        onclick="selectNavigation(this, 'Profile')"
+    >
+
+        <div class="nav-icon">
+
+            👤
+
+        </div>
+
+        Profile
+
+    </div>
+
+
+</div>
+
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+>
+</div>
+
+
+
+<script>
+
+/* =========================
+   TIMER
+========================= */
+
+let timerInterval = null;
+
+let startTime = null;
+
+let elapsedTime = 0;
+
+let tripRunning = false;
+
+
+/* START TRIP */
+
+function startTrip() {
+
+    if (tripRunning) {
+
+        return;
+
+    }
+
+
+    tripRunning = true;
+
+
+    startTime =
+        Date.now() - elapsedTime;
+
+
+    timerInterval =
+        setInterval(updateTimer, 1000);
+
+
+    document.getElementById("startButton")
+        .disabled = true;
+
+
+    document.getElementById("endButton")
+        .disabled = false;
+
+
+    document.getElementById("timerMessage")
+        .innerText = "Trip in progress";
+
+
+    showToast("Trip started");
+
+}
+
+
+/* UPDATE TIMER */
+
+function updateTimer() {
+
+    elapsedTime =
+        Date.now() - startTime;
+
+
+    let totalSeconds =
+        Math.floor(elapsedTime / 1000);
+
+
+    let hours =
+        Math.floor(totalSeconds / 3600);
+
+
+    let minutes =
+        Math.floor(
+            (totalSeconds % 3600) / 60
+        );
+
+
+    let seconds =
+        totalSeconds % 60;
+
+
+    hours =
+        String(hours).padStart(2, "0");
+
+
+    minutes =
+        String(minutes).padStart(2, "0");
+
+
+    seconds =
+        String(seconds).padStart(2, "0");
+
+
+    document.getElementById("timer")
+        .innerText =
+        hours + ":" +
+        minutes + ":" +
+        seconds;
+
+}
+
+
+/* END TRIP */
+
+function endTrip() {
+
+    if (!tripRunning) {
+
+        return;
+
+    }
+
+
+    clearInterval(timerInterval);
+
+
+    tripRunning = false;
+
+
+    document.getElementById("startButton")
+        .disabled = false;
+
+
+    document.getElementById("endButton")
+        .disabled = true;
+
+
+    document.getElementById("timerMessage")
+        .innerText =
+        "Trip completed";
+
+
+    showToast("Trip ended successfully");
+
+}
+
+
+/* =========================
+   HEADCOUNT
+========================= */
+
+function updateCount(stopNumber) {
+
+    const input =
+        document.getElementById(
+            "count" + stopNumber
+        );
+
+
+    const status =
+        document.getElementById(
+            "status" + stopNumber
+        );
+
+
+    if (input.value === "") {
+
+        showToast(
+            "Please enter headcount"
+        );
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    status.innerText = "Updated";
+
+    status.classList.add("updated");
+
+
+    showToast(
+        "Headcount updated: " +
+        input.value
+    );
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function selectNavigation(
+    element,
+    page
+) {
+
+    const items =
+        document.querySelectorAll(
+            ".nav-item"
+        );
+
+
+    items.forEach(function(item) {
+
+        item.classList.remove("active");
+
+    });
+
+
+    element.classList.add("active");
+
+
+    showToast(
+        page + " selected"
+    );
+
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+
+    toast.innerText = message;
+
+
+    toast.style.display = "block";
+
+
+    setTimeout(function() {
+
+        toast.style.display = "none";
+
+    }, 2000);
+
+}
+
+</script>
+
+</body>
+
+</html>

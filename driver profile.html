@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            color: #202124;
+        }
+
+        /* =========================
+           MAIN MOBILE SCREEN
+        ========================== */
+
+        .mobile-screen {
+            width: 100%;
+            max-width: 430px;
+            min-height: 100vh;
+            margin: auto;
+
+            background: white;
+
+            position: relative;
+
+            padding-bottom: 95px;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================
+           TOP HEADER
+        ========================== */
+
+        .top-header {
+
+            height: 62px;
+
+            background: #1565c0;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 0 20px;
+        }
+
+
+        .back-arrow {
+
+            font-size: 32px;
+
+            margin-right: 28px;
+
+            cursor: pointer;
+
+            line-height: 1;
+        }
+
+
+        .top-header h2 {
+
+            font-size: 18px;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           COVER
+        ========================== */
+
+        .cover {
+
+            height: 115px;
+
+            background: #eaf3ff;
+
+            position: relative;
+        }
+
+
+        /* =========================
+           PROFILE NAME
+        ========================== */
+
+        .profile-section {
+
+            text-align: center;
+
+            height: 85px;
+
+            position: relative;
+        }
+
+
+        .profile-name {
+
+            padding-top: 22px;
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            color: #202124;
+        }
+
+
+        /* =========================
+           DETAILS CARD
+        ========================== */
+
+        .details-card {
+
+            margin: 12px 12px 0;
+
+            border: 1px solid #e5e5e5;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            background: white;
+
+            box-shadow:
+                0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =========================
+           DETAIL ROW
+        ========================== */
+
+        .detail-row {
+
+            min-height: 84px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 10px 14px;
+
+            border-bottom: 1px solid #eeeeee;
+
+            cursor: pointer;
+
+            transition: background 0.2s;
+        }
+
+
+        .detail-row:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .detail-row:hover {
+
+            background: #f8fbff;
+        }
+
+
+        /* =========================
+           ICON CIRCLE
+        ========================== */
+
+        .icon-circle {
+
+            width: 42px;
+
+            height: 42px;
+
+            min-width: 42px;
+
+            border-radius: 50%;
+
+            background: #e3efff;
+
+            color: #1565c0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 20px;
+
+            margin-right: 14px;
+        }
+
+
+        /* =========================
+           TEXT
+        ========================== */
+
+        .detail-text {
+
+            flex: 1;
+
+            text-align: left;
+        }
+
+
+        .detail-title {
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            margin-bottom: 6px;
+        }
+
+
+        .detail-value {
+
+            font-size: 13px;
+
+            color: #777777;
+
+            word-break: break-word;
+        }
+
+
+        /* =========================
+           ARROW
+        ========================== */
+
+        .arrow {
+
+            font-size: 27px;
+
+            color: #777777;
+
+            margin-left: 8px;
+        }
+
+
+        /* =========================
+           EDIT INPUT
+        ========================== */
+
+        .edit-input {
+
+            width: 100%;
+
+            border: none;
+
+            border-bottom: 2px solid #1565c0;
+
+            outline: none;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            font-size: 13px;
+
+            color: #333333;
+
+            padding: 4px 0;
+
+            background: transparent;
+        }
+
+
+        /* =========================
+           SAVE BUTTON
+        ========================== */
+
+        .save-button {
+
+            display: none;
+
+            width: calc(100% - 24px);
+
+            margin: 15px 12px 0;
+
+            height: 52px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #1565c0;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+
+        .save-button:hover {
+
+            background: #0d47a1;
+        }
+
+
+        .save-button.show {
+
+            display: block;
+        }
+
+
+        /* =========================
+           LOGOUT
+        ========================== */
+
+        .logout-button {
+
+            height: 58px;
+
+            margin: 20px 12px 0;
+
+            border: 1px solid #e7e7e7;
+
+            border-radius: 11px;
+
+            box-shadow:
+                0 2px 5px rgba(0, 0, 0, 0.08);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #e02b2b;
+
+            font-weight: 600;
+
+            font-size: 14px;
+
+            cursor: pointer;
+        }
+
+
+        .logout-button:hover {
+
+            background: #fff5f5;
+        }
+
+
+        .logout-icon {
+
+            font-size: 22px;
+
+            margin-right: 10px;
+        }
+
+
+        /* =========================
+           BOTTOM NAVIGATION
+        ========================== */
+
+        .bottom-nav {
+
+            position: fixed;
+
+            bottom: 0;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            width: 100%;
+
+            max-width: 430px;
+
+            height: 82px;
+
+            background: white;
+
+            border-top: 1px solid #eeeeee;
+
+            display: flex;
+
+            justify-content: space-around;
+
+            align-items: center;
+
+            z-index: 20;
+        }
+
+
+        .nav-item {
+
+            width: 25%;
+
+            text-align: center;
+
+            color: #888888;
+
+            font-size: 11px;
+
+            cursor: pointer;
+        }
+
+
+        .nav-icon {
+
+            font-size: 23px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .nav-item.active {
+
+            color: #1565c0;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           TOAST MESSAGE
+        ========================== */
+
+        .toast {
+
+            position: fixed;
+
+            bottom: 95px;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            background: #222222;
+
+            color: white;
+
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            display: none;
+
+            z-index: 100;
+        }
+
+
+        .toast.show {
+
+            display: block;
+        }
+
+
+        /* =========================
+           DESKTOP
+        ========================== */
+
+        @media (min-width: 600px) {
+
+            body {
+
+                background: #f5f5f5;
+            }
+
+            .mobile-screen {
+
+                box-shadow:
+                    0 0 15px rgba(0, 0, 0, 0.08);
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="mobile-screen">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <div class="top-header">
+
+        <div
+            class="back-arrow"
+            onclick="goBack()"
+        >
+            ‹
+        </div>
+
+        <h2>Profile</h2>
+
+    </div>
+
+
+    <!-- =========================
+         BLUE COVER
+    ========================== -->
+
+    <div class="cover"></div>
+
+
+    <!-- =========================
+         NAME
+    ========================== -->
+
+    <div class="profile-section">
+
+        <div
+            class="profile-name"
+            id="profileName"
+        >
+            Ramesh Kumar
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         DETAILS
+    ========================== -->
+
+    <div class="details-card">
+
+
+        <!-- NAME -->
+
+        <div
+            class="detail-row"
+            onclick="editName()"
+        >
+
+            <div class="icon-circle">
+                👤
+            </div>
+
+
+            <div class="detail-text">
+
+                <div class="detail-title">
+                    Name
+                </div>
+
+                <div
+                    class="detail-value"
+                    id="nameValue"
+                >
+                    Ramesh Kumar
+                </div>
+
+            </div>
+
+
+            <div class="arrow">
+                ›
+            </div>
+
+        </div>
+
+
+
+        <!-- PHONE NUMBER -->
+
+        <div
+            class="detail-row"
+            onclick="editPhone()"
+        >
+
+            <div class="icon-circle">
+                ☎
+            </div>
+
+
+            <div class="detail-text">
+
+                <div class="detail-title">
+                    Phone Number
+                </div>
+
+                <div
+                    class="detail-value"
+                    id="phoneValue"
+                >
+                    +91 98765 43210
+                </div>
+
+            </div>
+
+
+            <div class="arrow">
+                ›
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         SAVE BUTTON
+    ========================== -->
+
+    <button
+        class="save-button"
+        id="saveButton"
+        onclick="saveChanges()"
+    >
+        Save Changes
+    </button>
+
+
+    <!-- =========================
+         LOGOUT
+    ========================== -->
+
+    <div
+        class="logout-button"
+        onclick="logout()"
+    >
+
+        <span class="logout-icon">
+            ⇥
+        </span>
+
+        Logout
+
+    </div>
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================== -->
+
+    <div class="bottom-nav">
+
+
+        <!-- Dashboard -->
+
+        <div
+            class="nav-item"
+            onclick="navigate('dashboard')"
+        >
+
+            <div class="nav-icon">
+                ⌂
+            </div>
+
+            Dashboard
+
+        </div>
+
+
+
+        <!-- My Route -->
+
+        <div
+            class="nav-item"
+            onclick="navigate('route')"
+        >
+
+            <div class="nav-icon">
+                ⌖
+            </div>
+
+            My Route
+
+        </div>
+
+
+
+        <!-- Trips -->
+
+        <div
+            class="nav-item"
+            onclick="navigate('trips')"
+        >
+
+            <div class="nav-icon">
+                ▣
+            </div>
+
+            Trips
+
+        </div>
+
+
+
+        <!-- Profile -->
+
+        <div class="nav-item active">
+
+            <div class="nav-icon">
+                ●
+            </div>
+
+            Profile
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- Toast -->
+
+<div
+    class="toast"
+    id="toast"
+>
+    Changes saved successfully
+</div>
+
+
+
+<script>
+
+    /* =========================
+       LOAD SAVED DATA
+    ========================== */
+
+    window.onload = function () {
+
+        const savedName =
+            localStorage.getItem("profileName");
+
+        const savedPhone =
+            localStorage.getItem("profilePhone");
+
+
+        if (savedName) {
+
+            document
+                .getElementById("profileName")
+                .textContent = savedName;
+
+            document
+                .getElementById("nameValue")
+                .textContent = savedName;
+        }
+
+
+        if (savedPhone) {
+
+            document
+                .getElementById("phoneValue")
+                .textContent = savedPhone;
+        }
+
+    };
+
+
+    /* =========================
+       EDIT NAME
+    ========================== */
+
+    function editName() {
+
+        const nameValue =
+            document.getElementById("nameValue");
+
+        const currentName =
+            nameValue.textContent.trim();
+
+
+        if (
+            document.getElementById("nameInput")
+        ) {
+            return;
+        }
+
+
+        const input =
+            document.createElement("input");
+
+
+        input.type = "text";
+
+        input.id = "nameInput";
+
+        input.className = "edit-input";
+
+        input.value = currentName;
+
+
+        nameValue.innerHTML = "";
+
+        nameValue.appendChild(input);
+
+        input.focus();
+
+
+        input.addEventListener(
+            "click",
+            function(event) {
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        input.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    updateName(input.value);
+
+                }
+
+            }
+        );
+
+
+        input.addEventListener(
+            "blur",
+            function() {
+
+                updateName(input.value);
+
+            }
+        );
+
+
+        showSaveButton();
+
+    }
+
+
+
+    /* =========================
+       UPDATE NAME
+    ========================== */
+
+    function updateName(newName) {
+
+        newName =
+            newName.trim();
+
+
+        if (newName === "") {
+
+            newName =
+                "Ramesh Kumar";
+        }
+
+
+        document
+            .getElementById("nameValue")
+            .textContent = newName;
+
+
+        document
+            .getElementById("profileName")
+            .textContent = newName;
+
+
+        localStorage.setItem(
+            "profileName",
+            newName
+        );
+
+
+        showSaveButton();
+
+    }
+
+
+
+    /* =========================
+       EDIT PHONE
+    ========================== */
+
+    function editPhone() {
+
+        const phoneValue =
+            document.getElementById("phoneValue");
+
+        const currentPhone =
+            phoneValue.textContent.trim();
+
+
+        if (
+            document.getElementById("phoneInput")
+        ) {
+            return;
+        }
+
+
+        const input =
+            document.createElement("input");
+
+
+        input.type = "tel";
+
+        input.id = "phoneInput";
+
+        input.className = "edit-input";
+
+        input.value = currentPhone;
+
+
+        phoneValue.innerHTML = "";
+
+        phoneValue.appendChild(input);
+
+        input.focus();
+
+
+        input.addEventListener(
+            "click",
+            function(event) {
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        input.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    updatePhone(input.value);
+
+                }
+
+            }
+        );
+
+
+        input.addEventListener(
+            "blur",
+            function() {
+
+                updatePhone(input.value);
+
+            }
+        );
+
+
+        showSaveButton();
+
+    }
+
+
+
+    /* =========================
+       UPDATE PHONE
+    ========================== */
+
+    function updatePhone(newPhone) {
+
+        newPhone =
+            newPhone.trim();
+
+
+        if (newPhone === "") {
+
+            newPhone =
+                "+91 98765 43210";
+        }
+
+
+        document
+            .getElementById("phoneValue")
+            .textContent = newPhone;
+
+
+        localStorage.setItem(
+            "profilePhone",
+            newPhone
+        );
+
+
+        showSaveButton();
+
+    }
+
+
+
+    /* =========================
+       SHOW SAVE BUTTON
+    ========================== */
+
+    function showSaveButton() {
+
+        document
+            .getElementById("saveButton")
+            .classList.add("show");
+
+    }
+
+
+
+    /* =========================
+       SAVE CHANGES
+    ========================== */
+
+    function saveChanges() {
+
+        const name =
+            document
+                .getElementById("nameValue")
+                .textContent
+                .trim();
+
+
+        const phone =
+            document
+                .getElementById("phoneValue")
+                .textContent
+                .trim();
+
+
+        localStorage.setItem(
+            "profileName",
+            name
+        );
+
+
+        localStorage.setItem(
+            "profilePhone",
+            phone
+        );
+
+
+        document
+            .getElementById("saveButton")
+            .classList.remove("show");
+
+
+        showToast(
+            "Changes saved successfully"
+        );
+
+    }
+
+
+
+    /* =========================
+       TOAST
+    ========================== */
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById("toast");
+
+
+        toast.textContent =
+            message;
+
+
+        toast.classList.add("show");
+
+
+        setTimeout(
+            function() {
+
+                toast.classList.remove("show");
+
+            },
+            2000
+        );
+
+    }
+
+
+
+    /* =========================
+       LOGOUT
+    ========================== */
+
+    function logout() {
+
+        const confirmLogout =
+            confirm(
+                "Are you sure you want to logout?"
+            );
+
+
+        if (confirmLogout) {
+
+            alert(
+                "Logged out successfully."
+            );
+
+        }
+
+    }
+
+
+
+    /* =========================
+       BACK BUTTON
+    ========================== */
+
+    function goBack() {
+
+        if (window.history.length > 1) {
+
+            window.history.back();
+
+        } else {
+
+            alert(
+                "Back button clicked"
+            );
+
+        }
+
+    }
+
+
+
+    /* =========================
+       NAVIGATION
+    ========================== */
+
+    function navigate(page) {
+
+        if (page === "dashboard") {
+
+            alert(
+                "Opening Dashboard"
+            );
+
+        }
+
+        else if (page === "route") {
+
+            alert(
+                "Opening My Route"
+            );
+
+        }
+
+        else if (page === "trips") {
+
+            alert(
+                "Opening Trips"
+            );
+
+        }
+
+    }
+
+</script>
+
+
+</body>
+</html>

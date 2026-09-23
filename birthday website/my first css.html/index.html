@@ -1,0 +1,630 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FleetLog — Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#0b1220;
+    --navy-900:#101a2c;
+    --navy-800:#16233a;
+    --navy-700:#213249;
+    --steel-500:#5b7594;
+    --steel-300:#9db2c9;
+    --paper-50:#f6f7f9;
+    --paper-100:#eef1f4;
+    --amber-500:#f2a33d;
+    --amber-600:#d98c26;
+    --line-500:#3f5670;
+    --good-500:#3fae6a;
+    --danger-500:#d1594a;
+    --radius-card: 4px;
+  }
+  :root:not([data-theme="light"]){
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper-50:#0b1220;
+      --paper-100:#101a2c;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper-50:#0b1220;
+    --paper-100:#101a2c;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:'IBM Plex Sans', -apple-system, sans-serif;
+    background:var(--paper-50);
+    color:var(--navy-900);
+    display:flex;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  .shell{
+    display:flex;
+    width:100%;
+    min-height:100vh;
+  }
+
+  .brand-panel{
+    flex:1 1 46%;
+    min-width:0;
+    background:linear-gradient(180deg, #ffffff 0%, var(--paper-100) 100%);
+    color:var(--navy-900);
+    border-right:1px solid #e4e8ec;
+    position:relative;
+    padding:56px 56px 40px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    overflow:hidden;
+  }
+  @media (max-width:900px){
+    .brand-panel{display:none;}
+  }
+
+  .brand-mark{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:0.01em;
+    z-index:2;
+    position:relative;
+  }
+  .brand-mark .dot{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--amber-500);
+    flex-shrink:0;
+  }
+
+  .route-art{
+    position:relative;
+    z-index:2;
+    flex:1;
+    display:flex;
+    align-items:center;
+    margin:24px 0;
+  }
+  .route-art svg{width:100%;height:auto;max-height:340px;}
+
+  .brand-copy{position:relative;z-index:2;max-width:420px;}
+  .brand-copy h1{
+    font-size:30px;
+    line-height:1.28;
+    font-weight:600;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+  }
+  .brand-copy p{
+    font-size:15px;
+    line-height:1.6;
+    color:var(--steel-500);
+    margin:0;
+  }
+
+  .brand-stats{
+    display:flex;
+    gap:32px;
+    margin-top:28px;
+    position:relative;
+    z-index:2;
+  }
+  .brand-stats .stat b{
+    display:block;
+    font-size:22px;
+    font-weight:700;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .brand-stats .stat span{
+    font-size:12.5px;
+    color:var(--steel-500);
+  }
+
+  .grid-fade{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(#d8dde3 1px, transparent 1px),
+      linear-gradient(90deg, #d8dde3 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.6;
+    mask-image:radial-gradient(circle at 30% 20%, black, transparent 70%);
+  }
+
+  .form-panel{
+    flex:1 1 54%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+  }
+
+  .form-card{
+    width:100%;
+    max-width:400px;
+  }
+
+  .mobile-brand{
+    display:none;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    font-size:18px;
+    color:var(--navy-900);
+    margin-bottom:32px;
+  }
+  .mobile-brand .dot{width:9px;height:9px;border-radius:50%;background:var(--amber-600);}
+  @media (max-width:900px){
+    .mobile-brand{display:flex;}
+  }
+
+  .form-head h2{
+    font-size:23px;
+    font-weight:600;
+    margin:0 0 6px;
+    color:var(--navy-900);
+    letter-spacing:-0.01em;
+  }
+  .form-head p{
+    margin:0 0 28px;
+    font-size:14px;
+    color:var(--steel-500);
+  }
+
+  .role-switch{
+    display:flex;
+    background:var(--paper-100);
+    border:1px solid #dfe4ea;
+    border-radius:6px;
+    padding:3px;
+    margin-bottom:26px;
+  }
+  .role-switch button{
+    flex:1;
+    border:0;
+    background:transparent;
+    padding:10px 12px;
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--steel-500);
+    border-radius:4px;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .role-switch button.active{
+    background:var(--navy-900);
+    color:#fff;
+  }
+
+  form{display:none;}
+  form.active{display:block;}
+
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--navy-800);
+    margin-bottom:7px;
+  }
+  .field .input-wrap{position:relative;}
+  .field input{
+    width:100%;
+    padding:11px 13px;
+    font-family:inherit;
+    font-size:14.5px;
+    border:1px solid #d8dde3;
+    border-radius:6px;
+    background:#fff;
+    color:var(--navy-900);
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .field input::placeholder{color:#a7afb9;}
+  .field input:focus{
+    outline:none;
+    border-color:var(--navy-700);
+    box-shadow:0 0 0 3px rgba(33,50,73,0.12);
+  }
+  .field.has-error input{border-color:var(--danger-500);}
+  .field .error-msg{
+    display:none;
+    font-size:12px;
+    color:var(--danger-500);
+    margin-top:6px;
+  }
+  .field.has-error .error-msg{display:block;}
+
+  .id-hint{
+    font-size:11.5px;
+    color:var(--steel-500);
+    margin-top:6px;
+  }
+
+  .toggle-pass{
+    position:absolute;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:0;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:600;
+    color:var(--steel-500);
+    font-family:inherit;
+    padding:4px 6px;
+  }
+  .toggle-pass:hover{color:var(--navy-800);}
+
+  .row-between{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:22px;
+  }
+  .remember{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:13px;
+    color:var(--navy-800);
+  }
+  .remember input{accent-color:var(--navy-900);width:14px;height:14px;}
+  .forgot-link{
+    font-size:13px;
+    font-weight:600;
+    color:var(--navy-800);
+    text-decoration:none;
+    border-bottom:1px solid var(--steel-300);
+  }
+  .forgot-link:hover{color:var(--amber-600);border-color:var(--amber-600);}
+
+  .submit-btn{
+    width:100%;
+    padding:12.5px;
+    background:var(--navy-900);
+    color:#fff;
+    border:0;
+    border-radius:6px;
+    font-family:inherit;
+    font-size:14.5px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .15s ease, transform .05s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  .submit-btn:hover{background:var(--navy-800);}
+  .submit-btn:active{transform:translateY(1px);}
+  .submit-btn.loading .btn-text{opacity:0;}
+  .submit-btn .spinner{
+    display:none;
+    position:absolute;
+    width:16px;height:16px;
+    border:2px solid rgba(255,255,255,0.35);
+    border-top-color:#fff;
+    border-radius:50%;
+    animation:spin .7s linear infinite;
+  }
+  .submit-btn.loading{position:relative;}
+  .submit-btn.loading .spinner{display:block;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:24px 0 18px;
+    color:#b7bfc8;
+    font-size:12px;
+  }
+  .divider::before,.divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:#e4e8ec;
+  }
+
+  .footnote{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--steel-500);
+  }
+  .footnote a{color:var(--navy-800);font-weight:600;text-decoration:none;}
+
+  .status-banner{
+    display:none;
+    align-items:flex-start;
+    gap:10px;
+    padding:11px 13px;
+    border-radius:6px;
+    font-size:13px;
+    margin-bottom:20px;
+    line-height:1.5;
+  }
+  .status-banner.show{display:flex;}
+  .status-banner.error{background:#fbeceA;color:#8a3226;border:1px solid #f0c9c1;}
+  .status-banner.success{background:#e9f7ef;color:#1e6b40;border:1px solid #bfe6cf;}
+
+  .forgot-panel{display:none;}
+  .forgot-panel.active{display:block;}
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--steel-500);
+    background:none;
+    border:0;
+    cursor:pointer;
+    font-family:inherit;
+    padding:0;
+    margin-bottom:20px;
+  }
+  .back-link:hover{color:var(--navy-900);}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <div class="brand-panel">
+    <div class="grid-fade"></div>
+
+    <div class="brand-mark"><span class="dot"></span>FleetLog</div>
+
+    <div class="route-art">
+      <svg viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 240 C 90 240, 100 100, 170 100 S 250 220, 320 160 S 420 60, 460 60"
+              stroke="#c7cfd8" stroke-width="2" stroke-dasharray="5 7" fill="none"/>
+        <path d="M20 240 C 90 240, 100 100, 170 100 S 250 220, 320 160 S 420 60, 460 60"
+              stroke="#d98c26" stroke-width="2.5" fill="none"
+              stroke-dasharray="620" stroke-dashoffset="620">
+          <animate attributeName="stroke-dashoffset" from="620" to="0" dur="2.4s" fill="freeze" />
+        </path>
+        <circle cx="20" cy="240" r="6" fill="#16233a"/>
+        <circle cx="170" cy="100" r="5" fill="#5b7594"/>
+        <circle cx="320" cy="160" r="5" fill="#5b7594"/>
+        <circle cx="460" cy="60" r="6" fill="#d98c26"/>
+        <text x="20" y="262" fill="#5b7594" font-family="IBM Plex Mono, monospace" font-size="11">DEPOT</text>
+        <text x="410" y="46" fill="#d98c26" font-family="IBM Plex Mono, monospace" font-size="11">STOP 04</text>
+      </svg>
+    </div>
+
+    <div class="brand-copy">
+      <h1>One log for every trip,<br>every driver, every shift.</h1>
+      <p>Drivers record head count and trip timing from the road. Management sees every route, wage, and delay in one place, the moment it happens.</p>
+      <div class="brand-stats">
+        <div class="stat"><b>07:15</b><span>Scheduled start</span></div>
+        <div class="stat"><b>+15m</b><span>Flagged as delayed</span></div>
+        <div class="stat"><b>32</b><span>Head count today</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-panel">
+    <div class="form-card">
+
+      <div class="mobile-brand"><span class="dot"></span>FleetLog</div>
+
+      <div id="loginView">
+        <div class="form-head">
+          <h2>Sign in</h2>
+          <p>Choose your account type to continue.</p>
+        </div>
+
+        <div class="role-switch">
+          <button type="button" class="active" data-role="driver" onclick="switchRole('driver')">Driver</button>
+          <button type="button" data-role="management" onclick="switchRole('management')">Management</button>
+        </div>
+
+        <div class="status-banner" id="statusBanner"></div>
+
+        <form id="driverForm" class="active" onsubmit="return handleLogin(event, 'driver')">
+          <div class="field" id="driverIdField">
+            <label for="driverId">Driver ID</label>
+            <input type="text" id="driverId" placeholder="e.g. DRV-1042" autocomplete="username" required>
+            <div class="id-hint">The ID printed on your route card.</div>
+            <div class="error-msg">Enter your driver ID.</div>
+          </div>
+          <div class="field" id="driverPassField">
+            <label for="driverPass">Password</label>
+            <div class="input-wrap">
+              <input type="password" id="driverPass" placeholder="Enter your password" autocomplete="current-password" required>
+              <button type="button" class="toggle-pass" onclick="togglePass('driverPass', this)">Show</button>
+            </div>
+            <div class="error-msg">Enter your password.</div>
+          </div>
+          <div class="row-between">
+            <label class="remember"><input type="checkbox"> Keep me signed in</label>
+            <a href="#" class="forgot-link" onclick="openForgot(event,'driver')">Forgot password?</a>
+          </div>
+          <button type="submit" class="submit-btn">
+            <span class="spinner"></span>
+            <span class="btn-text">Sign in to route panel</span>
+          </button>
+        </form>
+
+        <form id="managementForm" onsubmit="return handleLogin(event, 'management')">
+          <div class="field" id="mgmtIdField">
+            <label for="mgmtId">Work email</label>
+            <input type="text" id="mgmtId" placeholder="name@company.com" autocomplete="username" required>
+            <div class="error-msg">Enter your work email.</div>
+          </div>
+          <div class="field" id="mgmtPassField">
+            <label for="mgmtPass">Password</label>
+            <div class="input-wrap">
+              <input type="password" id="mgmtPass" placeholder="Enter your password" autocomplete="current-password" required>
+              <button type="button" class="toggle-pass" onclick="togglePass('mgmtPass', this)">Show</button>
+            </div>
+            <div class="error-msg">Enter your password.</div>
+          </div>
+          <div class="row-between">
+            <label class="remember"><input type="checkbox"> Keep me signed in</label>
+            <a href="#" class="forgot-link" onclick="openForgot(event,'management')">Forgot password?</a>
+          </div>
+          <button type="submit" class="submit-btn">
+            <span class="spinner"></span>
+            <span class="btn-text">Sign in to dashboard</span>
+          </button>
+        </form>
+
+        <div class="divider">NEED ACCESS</div>
+        <p class="footnote">New driver or manager accounts are added by depot admin. Contact your supervisor to be set up.</p>
+      </div>
+
+      <div id="forgotView" class="forgot-panel">
+        <button class="back-link" onclick="closeForgot()">&larr; Back to sign in</button>
+        <div class="form-head">
+          <h2>Reset password</h2>
+          <p id="forgotSubtext">Enter your driver ID and we'll send a reset link to the phone number on file.</p>
+        </div>
+        <div class="status-banner" id="forgotBanner"></div>
+        <form id="forgotForm" onsubmit="return handleForgot(event)">
+          <div class="field" id="forgotIdField">
+            <label for="forgotId" id="forgotIdLabel">Driver ID</label>
+            <input type="text" id="forgotId" placeholder="e.g. DRV-1042" required>
+            <div class="error-msg">This field is required.</div>
+          </div>
+          <button type="submit" class="submit-btn">
+            <span class="spinner"></span>
+            <span class="btn-text">Send reset link</span>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let currentRole = 'driver';
+  let forgotRole = 'driver';
+
+  function switchRole(role){
+    currentRole = role;
+    document.querySelectorAll('.role-switch button').forEach(b=>{
+      b.classList.toggle('active', b.dataset.role === role);
+    });
+    document.getElementById('driverForm').classList.toggle('active', role==='driver');
+    document.getElementById('managementForm').classList.toggle('active', role==='management');
+    hideBanner('statusBanner');
+  }
+
+  function togglePass(id, btn){
+    const input = document.getElementById(id);
+    const isPass = input.type === 'password';
+    input.type = isPass ? 'text' : 'password';
+    btn.textContent = isPass ? 'Hide' : 'Show';
+  }
+
+  function showBanner(id, type, msg){
+    const el = document.getElementById(id);
+    el.className = 'status-banner show ' + type;
+    el.textContent = msg;
+  }
+  function hideBanner(id){
+    const el = document.getElementById(id);
+    el.className = 'status-banner';
+  }
+
+  function setFieldError(fieldId, hasError){
+    document.getElementById(fieldId).classList.toggle('has-error', hasError);
+  }
+
+  function handleLogin(evt, role){
+    evt.preventDefault();
+    hideBanner('statusBanner');
+
+    let valid = true;
+    const idField = role === 'driver' ? 'driverId' : 'mgmtId';
+    const passField = role === 'driver' ? 'driverPass' : 'mgmtPass';
+    const idFieldWrap = role === 'driver' ? 'driverIdField' : 'mgmtIdField';
+    const passFieldWrap = role === 'driver' ? 'driverPassField' : 'mgmtPassField';
+
+    const idVal = document.getElementById(idField).value.trim();
+    const passVal = document.getElementById(passField).value.trim();
+
+    setFieldError(idFieldWrap, idVal === '');
+    setFieldError(passFieldWrap, passVal === '');
+    if (idVal === '' || passVal === '') { valid = false; }
+
+    if (!valid) return false;
+
+    const btn = evt.target.querySelector('.submit-btn');
+    btn.classList.add('loading');
+
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      showBanner('statusBanner', 'success',
+        role === 'driver'
+          ? 'Signed in. Redirecting to your route panel…'
+          : 'Signed in. Redirecting to the management dashboard…');
+      // window.location.href = role === 'driver' ? '/driver-panel' : '/dashboard';
+    }, 900);
+
+    return false;
+  }
+
+  function openForgot(evt, role){
+    evt.preventDefault();
+    forgotRole = role;
+    document.getElementById('loginView').style.display = 'none';
+    document.getElementById('forgotView').classList.add('active');
+    hideBanner('forgotBanner');
+
+    const label = document.getElementById('forgotIdLabel');
+    const input = document.getElementById('forgotId');
+    const subtext = document.getElementById('forgotSubtext');
+    if (role === 'driver'){
+      label.textContent = 'Driver ID';
+      input.placeholder = 'e.g. DRV-1042';
+      subtext.textContent = "Enter your driver ID and we'll send a reset link to the phone number on file.";
+    } else {
+      label.textContent = 'Work email';
+      input.placeholder = 'name@company.com';
+      subtext.textContent = "Enter your work email and we'll send a reset link.";
+    }
+    input.value = '';
+    setFieldError('forgotIdField', false);
+  }
+
+  function closeForgot(){
+    document.getElementById('forgotView').classList.remove('active');
+    document.getElementById('loginView').style.display = 'block';
+  }
+
+  function handleForgot(evt){
+    evt.preventDefault();
+    const val = document.getElementById('forgotId').value.trim();
+    setFieldError('forgotIdField', val === '');
+    if (val === '') return false;
+
+    const btn = evt.target.querySelector('.submit-btn');
+    btn.classList.add('loading');
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      showBanner('forgotBanner', 'success', 'If that account exists, a reset link is on its way.');
+    }, 800);
+    return false;
+  }
+</script>
+
+</body>
+</html>

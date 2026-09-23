@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Route Calendar</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #cfe3fa;
+            padding: 30px;
+            color: #143d68;
+        }
+
+        /* Main container */
+
+        .calendar-container {
+            max-width: 1100px;
+            margin: auto;
+            background: white;
+            border-radius: 25px;
+            padding: 28px;
+            box-shadow: 0 15px 35px rgba(31, 74, 130, 0.15);
+        }
+
+        /* Header */
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .route-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #143d68;
+        }
+
+        .menu-button {
+            border: none;
+            background: transparent;
+            font-size: 25px;
+            color: #555;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .menu-button:hover {
+            background: #edf5ff;
+        }
+
+        /* Month navigation */
+
+        .month-navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .month-navigation button {
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 50%;
+            background: #e5f0ff;
+            color: #14518a;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .month-navigation button:hover {
+            background: #c9e0fb;
+        }
+
+        #monthYear {
+            min-width: 180px;
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            color: #143d68;
+        }
+
+        /* Weekdays */
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .weekday {
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            color: #777;
+            padding: 8px;
+        }
+
+        /* Calendar grid */
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        /* Individual day */
+
+        .day {
+            min-height: 115px;
+            border: 1px solid #d9e0e8;
+            border-radius: 10px;
+            background: #fff;
+            padding: 9px;
+            cursor: pointer;
+            transition: 0.2s;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .day:hover {
+            border-color: #3575e5;
+            box-shadow: 0 4px 12px rgba(53, 117, 229, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .empty-day {
+            border: none;
+            background: transparent;
+            cursor: default;
+        }
+
+        .empty-day:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Top row */
+
+        .day-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .on {
+            color: #219653;
+        }
+
+        .late {
+            color: #c62828;
+        }
+
+        .attendance {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* Date number */
+
+        .date-number {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 500;
+            color: #111;
+            margin: 12px 0;
+        }
+
+        /* Percentage */
+
+        .percentage {
+            font-size: 12px;
+            color: #555;
+        }
+
+        /* Selected date */
+
+        .selected {
+            border: 2px solid #3575e5;
+            background: #f1f7ff;
+        }
+
+        /* Details panel */
+
+        .details-panel {
+            margin-top: 25px;
+            padding: 20px;
+            background: #edf5ff;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .details-panel.show {
+            display: block;
+        }
+
+        .details-panel h3 {
+            color: #14518a;
+            font-size: 19px;
+            margin-bottom: 12px;
+        }
+
+        .details-panel p {
+            font-size: 15px;
+            color: #555;
+            margin: 7px 0;
+        }
+
+        .details-panel strong {
+            color: #143d68;
+        }
+
+        /* Menu popup */
+
+        .menu-popup {
+            position: absolute;
+            right: 35px;
+            top: 75px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            padding: 8px;
+            display: none;
+            z-index: 10;
+        }
+
+        .menu-popup.show {
+            display: block;
+        }
+
+        .menu-popup button {
+            display: block;
+            width: 150px;
+            border: none;
+            background: white;
+            padding: 12px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 7px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .menu-popup button:hover {
+            background: #edf5ff;
+            color: #14518a;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 800px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .calendar-container {
+                padding: 18px;
+            }
+
+            .route-title {
+                font-size: 19px;
+            }
+
+            .day {
+                min-height: 95px;
+                padding: 7px;
+            }
+
+            .date-number {
+                font-size: 18px;
+            }
+
+            .status,
+            .attendance {
+                font-size: 11px;
+            }
+
+            .percentage {
+                font-size: 10px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .calendar-container {
+                overflow-x: auto;
+            }
+
+            .weekdays,
+            .calendar-grid {
+                min-width: 650px;
+            }
+
+            .month-navigation {
+                min-width: 650px;
+            }
+
+            .route-title {
+                white-space: nowrap;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="calendar-container">
+
+        <!-- Header -->
+
+        <div class="calendar-header">
+
+            <h1 class="route-title">
+                Route-1: Pondicherry to office
+            </h1>
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                type="button"
+            >
+                ⋯
+            </button>
+
+        </div>
+
+
+        <!-- Three dot menu -->
+
+        <div
+            class="menu-popup"
+            id="menuPopup"
+        >
+
+            <button
+                type="button"
+                id="todayButton"
+            >
+                Go to today
+            </button>
+
+            <button
+                type="button"
+                id="closeMenu"
+            >
+                Close menu
+            </button>
+
+        </div>
+
+
+        <!-- Month navigation -->
+
+        <div class="month-navigation">
+
+            <button
+                type="button"
+                id="previousMonth"
+            >
+                ‹
+            </button>
+
+            <div id="monthYear"></div>
+
+            <button
+                type="button"
+                id="nextMonth"
+            >
+                ›
+            </button>
+
+        </div>
+
+
+        <!-- Weekdays -->
+
+        <div class="weekdays">
+
+            <div class="weekday">Mon</div>
+            <div class="weekday">Tue</div>
+            <div class="weekday">Wed</div>
+            <div class="weekday">Thu</div>
+            <div class="weekday">Fri</div>
+            <div class="weekday">Sat</div>
+            <div class="weekday">Sun</div>
+
+        </div>
+
+
+        <!-- Calendar -->
+
+        <div
+            class="calendar-grid"
+            id="calendarGrid"
+        ></div>
+
+
+        <!-- Selected day details -->
+
+        <div
+            class="details-panel"
+            id="detailsPanel"
+        >
+
+            <h3 id="detailsTitle">
+                Day Details
+            </h3>
+
+            <p>
+                <strong>Status:</strong>
+                <span id="detailsStatus"></span>
+            </p>
+
+            <p>
+                <strong>Headcount:</strong>
+                <span id="detailsHeadcount"></span>
+            </p>
+
+            <p>
+                <strong>Attendance:</strong>
+                <span id="detailsPercentage"></span>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* Current displayed month */
+
+        let currentDate = new Date();
+
+
+        /* Calendar data */
+
+        const calendarData = {
+
+            1: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            2: {
+                status: "On",
+                headcount: "11/12",
+                percentage: "92%"
+            },
+
+            3: {
+                status: "On",
+                headcount: "10/12",
+                percentage: "83%"
+            },
+
+            4: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            5: {
+                status: "On",
+                headcount: "9/12",
+                percentage: "75%"
+            },
+
+            6: {
+                status: "Late",
+                headcount: "8/12",
+                percentage: "67%"
+            },
+
+            7: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            8: {
+                status: "On",
+                headcount: "11/12",
+                percentage: "92%"
+            },
+
+            9: {
+                status: "Late",
+                headcount: "7/12",
+                percentage: "58%"
+            },
+
+            10: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            11: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            12: {
+                status: "On",
+                headcount: "10/12",
+                percentage: "83%"
+            },
+
+            13: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            14: {
+                status: "On",
+                headcount: "9/12",
+                percentage: "75%"
+            },
+
+            15: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            16: {
+                status: "Late",
+                headcount: "8/12",
+                percentage: "67%"
+            },
+
+            17: {
+                status: "On",
+                headcount: "11/12",
+                percentage: "92%"
+            },
+
+            18: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            19: {
+                status: "On",
+                headcount: "10/12",
+                percentage: "83%"
+            },
+
+            20: {
+                status: "Late",
+                headcount: "7/12",
+                percentage: "58%"
+            },
+
+            21: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            22: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            23: {
+                status: "On",
+                headcount: "9/12",
+                percentage: "75%"
+            },
+
+            24: {
+                status: "On",
+                headcount: "11/12",
+                percentage: "92%"
+            },
+
+            25: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            26: {
+                status: "Late",
+                headcount: "8/12",
+                percentage: "67%"
+            },
+
+            27: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            28: {
+                status: "On",
+                headcount: "10/12",
+                percentage: "83%"
+            },
+
+            29: {
+                status: "On",
+                headcount: "12/12",
+                percentage: "100%"
+            },
+
+            30: {
+                status: "On",
+                headcount: "11/12",
+                percentage: "92%"
+            }
+
+        };
+
+
+        /* Month names */
+
+        const monthNames = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ];
+
+
+        /* Elements */
+
+        const calendarGrid =
+            document.getElementById("calendarGrid");
+
+        const monthYear =
+            document.getElementById("monthYear");
+
+        const detailsPanel =
+            document.getElementById("detailsPanel");
+
+        const detailsTitle =
+            document.getElementById("detailsTitle");
+
+        const detailsStatus =
+            document.getElementById("detailsStatus");
+
+        const detailsHeadcount =
+            document.getElementById("detailsHeadcount");
+
+        const detailsPercentage =
+            document.getElementById("detailsPercentage");
+
+
+        /* Create calendar */
+
+        function createCalendar() {
+
+            calendarGrid.innerHTML = "";
+
+            const year =
+                currentDate.getFullYear();
+
+            const month =
+                currentDate.getMonth();
+
+
+            monthYear.textContent =
+                monthNames[month] + " " + year;
+
+
+            /*
+                JavaScript:
+                Sunday = 0
+                Monday = 1
+
+                We convert it so Monday = 0.
+            */
+
+            let firstDay =
+                new Date(year, month, 1).getDay();
+
+            firstDay =
+                firstDay === 0 ? 6 : firstDay - 1;
+
+
+            const daysInMonth =
+                new Date(year, month + 1, 0).getDate();
+
+
+            /* Empty spaces before day 1 */
+
+            for (
+                let i = 0;
+                i < firstDay;
+                i++
+            ) {
+
+                const emptyDay =
+                    document.createElement("div");
+
+                emptyDay.className =
+                    "day empty-day";
+
+                calendarGrid.appendChild(emptyDay);
+            }
+
+
+            /* Create actual dates */
+
+            for (
+                let day = 1;
+                day <= daysInMonth;
+                day++
+            ) {
+
+                const dayElement =
+                    document.createElement("div");
+
+                dayElement.className = "day";
+
+
+                /* Get saved data */
+
+                let data =
+                    calendarData[day];
+
+
+                /*
+                    If the month has more days,
+                    create normal placeholder data.
+                */
+
+                if (!data) {
+
+                    data = {
+                        status: "On",
+                        headcount: "12/12",
+                        percentage: "100%"
+                    };
+
+                }
+
+
+                const statusClass =
+                    data.status === "Late"
+                        ? "late"
+                        : "on";
+
+
+                dayElement.innerHTML = `
+
+                    <div class="day-top">
+
+                        <span class="status ${statusClass}">
+                            ${data.status}
+                        </span>
+
+                        <span class="attendance">
+                            ${data.headcount}
+                        </span>
+
+                    </div>
+
+
+                    <div class="date-number">
+                        ${day}
+                    </div>
+
+
+                    <div class="percentage">
+                        ${data.percentage}
+                    </div>
+
+                `;
+
+
+                /* Click date */
+
+                dayElement.addEventListener(
+                    "click",
+                    function () {
+
+                        document
+                            .querySelectorAll(".day")
+                            .forEach(function(item) {
+
+                                item.classList.remove(
+                                    "selected"
+                                );
+
+                            });
+
+
+                        dayElement.classList.add(
+                            "selected"
+                        );
+
+
+                        showDetails(
+                            day,
+                            data
+                        );
+
+                    }
+                );
+
+
+                calendarGrid.appendChild(
+                    dayElement
+                );
+
+            }
+
+        }
+
+
+        /* Show selected date */
+
+        function showDetails(day, data) {
+
+            detailsPanel.classList.add("show");
+
+
+            detailsTitle.textContent =
+                "Day " + day + " Details";
+
+
+            detailsStatus.textContent =
+                data.status;
+
+
+            detailsHeadcount.textContent =
+                data.headcount;
+
+
+            detailsPercentage.textContent =
+                data.percentage;
+
+        }
+
+
+        /* Previous month */
+
+        document
+            .getElementById("previousMonth")
+            .addEventListener(
+                "click",
+                function () {
+
+                    currentDate.setMonth(
+                        currentDate.getMonth() - 1
+                    );
+
+                    createCalendar();
+
+                }
+            );
+
+
+        /* Next month */
+
+        document
+            .getElementById("nextMonth")
+            .addEventListener(
+                "click",
+                function () {
+
+                    currentDate.setMonth(
+                        currentDate.getMonth() + 1
+                    );
+
+                    createCalendar();
+
+                }
+            );
+
+
+        /* Three-dot menu */
+
+        const menuButton =
+            document.getElementById("menuButton");
+
+        const menuPopup =
+            document.getElementById("menuPopup");
+
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                menuPopup.classList.toggle(
+                    "show"
+                );
+
+            }
+        );
+
+
+        /* Close menu */
+
+        document
+            .getElementById("closeMenu")
+            .addEventListener(
+                "click",
+                function () {
+
+                    menuPopup.classList.remove(
+                        "show"
+                    );
+
+                }
+            );
+
+
+        /* Go to today */
+
+        document
+            .getElementById("todayButton")
+            .addEventListener(
+                "click",
+                function () {
+
+                    currentDate =
+                        new Date();
+
+                    createCalendar();
+
+                    menuPopup.classList.remove(
+                        "show"
+                    );
+
+                }
+            );
+
+
+        /* Start */
+
+        createCalendar();
+
+    </script>
+
+</body>
+
+</html>

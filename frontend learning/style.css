@@ -1,0 +1,63 @@
+h1{
+    color: hotpink;
+    text-align: center;
+    font-size:40px;
+    border:2px solid purple;
+    padding: 20px;
+    margin: 10px;
+}
+p{
+    color:purple;
+    text-align:center;
+    font-size:18px;
+}
+h2{
+    color:seagreen;
+    text-align:left;
+    font-size:30px;
+    padding: 20px;
+    margin: 30px;
+}
+h3{
+    color:magenta;
+    text-align:center;
+    font-size:25px;
+    border: 2px solid orange;
+    padding: 25px 20px 30px 10px;
+
+    margin: 22px 21px 24px 25px;
+}
+h4{
+    color:greenyellow;
+    text-align:center;
+    font-size:35px;
+}
+h5{
+    color:brown;
+    text-align: justify;
+    font-size:25px;
+}
+body{
+    background-color:lavender;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border:3px solid maroon;
+}
+button:hover{
+    background-color: hotpink;
+    color: white;
+    border: none;
+    padding: 15px 23px;
+    border-radius: 18px;
+    transform:scale(1.05);
+    transition: 0.2s;
+}
+input:focus {
+    padding: 10px;
+    margin: 5px;
+    border: 2px solid hotpink;
+    border-radius: 8px;
+    outline: none;
+    background-color: lavender;
+    width: 280px;
+    height: 29px;
+}

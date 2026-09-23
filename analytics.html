@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #ffffff;
+            color: #111111;
+        }
+
+        .analytics-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 25px 55px 35px;
+        }
+
+        /* Header */
+        .header h1 {
+            font-size: 25px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #555555;
+        }
+
+        /* Analytics Grid */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 120px;
+            row-gap: 65px;
+            margin-top: 55px;
+        }
+
+        .analysis-item {
+            min-height: 100px;
+        }
+
+        .label {
+            font-size: 17px;
+            color: #555555;
+            margin-bottom: 12px;
+        }
+
+        .value {
+            font-size: 40px;
+            font-weight: 500;
+            line-height: 1;
+        }
+
+        /* Colors */
+        .green {
+            color: #168b2f;
+        }
+
+        .red {
+            color: #8f2727;
+        }
+
+        .bold {
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .analysis-container {
+                padding: 25px;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+                row-gap: 35px;
+                margin-top: 40px;
+            }
+
+            .value {
+                font-size: 34px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="analysis-container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>Analysis</h1>
+            <p>Route-1 - August 2026</p>
+        </div>
+
+        <!-- Analysis -->
+        <div class="analysis-grid">
+
+            <!-- On time trips -->
+            <div class="analysis-item">
+                <div class="label">On time trips</div>
+                <div class="value green">20</div>
+            </div>
+
+            <!-- Late trips -->
+            <div class="analysis-item">
+                <div class="label">Late trips</div>
+                <div class="value red">10</div>
+            </div>
+
+            <!-- Total trips -->
+            <div class="analysis-item">
+                <div class="label">Total trips</div>
+                <div class="value">30</div>
+            </div>
+
+            <!-- Total headcount -->
+            <div class="analysis-item">
+                <div class="label">Total headcount</div>
+                <div class="value bold">315/360</div>
+            </div>
+
+            <!-- Utilization -->
+            <div class="analysis-item">
+                <div class="label">Utilization</div>
+                <div class="value">87.5%</div>
+            </div>
+
+            <!-- Average headcount -->
+            <div class="analysis-item">
+                <div class="label">Avg headcount / trip</div>
+                <div class="value">10.5</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

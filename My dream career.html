@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radiance Facility Force - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* Left Side - Authority Login */
+        .left-side {
+            flex: 1;
+            background-color: #1a5b8c; /* Deep blue theme */
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Right Side - Driver Login */
+        .right-side {
+            flex: 1;
+            background-color: #ffffff;
+            color: #1a5b8c;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Branding at the top */
+        .brand-header {
+            position: absolute;
+            top: 40px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .brand-subtitle {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: #b0c4de;
+            font-weight: 600;
+        }
+
+        .brand-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1a5b8c;
+        }
+        
+        .right-side .brand-title {
+            color: #1a5b8c;
+        }
+        
+        .left-side .brand-title {
+            color: #ffffff;
+        }
+
+        .brand-tagline {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e67e22; /* Orange accent */
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        /* Login Section Styles */
+        .login-section {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .login-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 30px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .left-side .btn {
+            background-color: #ffffff;
+            color: #1a5b8c;
+            border: none;
+        }
+
+        .left-side .btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .right-side .btn {
+            background-color: #1a5b8c;
+            color: #ffffff;
+            border: none;
+        }
+
+        .right-side .btn:hover {
+            background-color: #14466d;
+        }
+
+        /* Center icon graphic placeholder */
+        .center-graphics {
+            position: absolute;
+            bottom: 15%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .center-graphics img {
+            width: 80px;
+            opacity: 0.8;
+        }
+
+        /* Responsive layout for smaller screens */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .left-side, .right-side {
+                height: 50vh;
+                flex: none;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Left Side: Authority Login -->
+        <div class="left-side">
+            <div class="brand-header">
+                <div class="brand-subtitle">RADIANC</div>
+                <div class="brand-title">Facility Force</div>
+                <div class="brand-tagline">WE CARE...</div>
+            </div>
+
+            <div class="login-section">
+                <div class="login-title">AUTHORITY LOGIN</div>
+                <button class="btn">Get Started</button>
+            </div>
+        </div>
+
+        <!-- Right Side: Driver Login -->
+        <div class="right-side">
+            <div class="login-section">
+                <div class="login-title">DRIVER LOGIN</div>
+                <button class="btn">Get Started</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
